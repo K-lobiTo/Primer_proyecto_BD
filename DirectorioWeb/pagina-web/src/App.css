@@ -1,0 +1,78 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: medium;
+  /* font-family: 'Courier New', Courier, monospace; */
+  font-family: Roboto, sans-serif;
+  font-style: italic;
+}
+
+body {
+  background-image: url(./imagenes/fondo.gif);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  overflow: scroll;
+}
+
+/* body{
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  background-color: linear-gradient(150deg,#6C3483,#58D68D);
+  height: 100hv;
+} */
+
+.App {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* .contenedor-principal{
+  width: 325px;
+  height: 500px;
+
+
+  border: 3px solid rgb(90, 207, 90);
+
+
+  border-radius: 30px;
+
+
+  background-color: whitesmoke;
+
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+
+}  */
+
+
+/* .submit{
+  width: 100px;
+  height: 50px;
+  font-size: small;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: whitesmoke;
+  border: 3px solid rgb(90, 207, 90);
+  cursor: pointer;
+  border-radius: 8px;
+  margin: 5px;
+  position: absolute;
+  top: 85%;
+} */

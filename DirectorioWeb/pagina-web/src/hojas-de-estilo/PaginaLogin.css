@@ -1,0 +1,76 @@
+/* .formulario{
+    width: 500px;
+    height: 500px;
+    background-color: white;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%); 
+}; */
+
+
+/* body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: linear-gradient(150deg,#6C3483,#58D68D);
+    height: 100hv;
+} */
+
+.formulario-login {
+    margin-top: 10%;
+    min-width: 400px;
+    min-height: 370px;
+    background: white;
+    border-radius: 10px;
+}
+
+.formulario-login h1 {
+    text-align: center;
+    padding: 20px 0 20px 0;
+    border-bottom: 1px solid silver;
+}
+
+.formulario-login form {
+    padding: 0 40px;
+    box-sizing: border-box;
+
+}
+
+.recordar {
+    margin: -5px 0 20px 5px;
+    color: blue;
+    cursor: pointer;
+}
+
+.recordar:hover {
+    text-decoration: underline;
+}
+
+.registrarse {
+    padding: 10px 0 10px 0;
+    margin: 80px;
+    text-align: center;
+    font-size: 16px;
+    color: black;
+
+}
+
+.registrarse-texto {
+    /* padding: 10px 0 10px 0; */
+    /* margin: 80px; */
+    text-align: center;
+    font-size: 16px;
+    color: black;
+    text-decoration: none;
+}
+
+.registrarse a {
+    color: blue;
+    text-decoration: none;
+}
+
+.registrarse a:hover {
+    text-decoration: underline;
+}

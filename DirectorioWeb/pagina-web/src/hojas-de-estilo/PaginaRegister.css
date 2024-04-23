@@ -1,0 +1,20 @@
+.form-register {
+    margin-top: 3%;
+    min-width: 400px;
+    min-height: 370px;
+    background: white;
+    border-radius: 10px;
+    padding-bottom: 20px;
+}
+
+.form-register h1 {
+    text-align: center;
+    padding: 20px 0 20px 0;
+    border-bottom: 1px solid silver;
+}
+
+.form-register form{
+    padding: 0 40px;
+    box-sizing: border-box;
+
+}
