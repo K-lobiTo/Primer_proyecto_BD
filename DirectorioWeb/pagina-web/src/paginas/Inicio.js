@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import '../hojas-de-estilo/PaginaInicio.css';
 import BotonM from '../componentes/BotonM';
-import ReporteFormulario from '../componentes/ReporteFormulario';
+import MatrizReportes from '../componentes/MatrizReportes';
 
 function Inicio() {  // usuarioID
 

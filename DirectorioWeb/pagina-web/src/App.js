@@ -5,7 +5,7 @@ import Main from './paginas/Main';
 import Login from './paginas/Login';
 import Register from './paginas/Register';
 // import DeleteBotton from './componentes/DeleteBotton';
-// import Inicio from './paginas/Inicio';
+import Inicio from './paginas/Inicio';
 
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          {/* <Route path='/inicio' element={<Inicio />} /> */}
+          <Route path='/inicio' element={<Inicio />} />
         </Routes>
       </BrowserRouter>
 

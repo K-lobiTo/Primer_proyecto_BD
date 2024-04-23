@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import '../hojas-de-estilo/ReporteFormulario.css';
+
 
 function ReporteFormulario(props) {
 
