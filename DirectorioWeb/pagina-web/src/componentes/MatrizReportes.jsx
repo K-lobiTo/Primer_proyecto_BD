@@ -3,7 +3,7 @@ import ReporteFormulario from './ReporteFormulario';
 import Reporte from './Reporte';
 import '../hojas-de-estilo/MatrizReportes.css';
 
-function MatrizReportes() {
+function MatrizReportes({ borrable }) {
 
     const [reportes, setReportes] = useState([]);
 
@@ -42,6 +42,7 @@ function MatrizReportes() {
                             id={reporte.id}
                             texto={reporte.texto}
                             verReporte={verReporte}
+                            borrable={borrable}
                             eliminarReporte={eliminarReporte} />
                     )
                 }

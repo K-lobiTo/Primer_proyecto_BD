@@ -3,6 +3,7 @@ import '../hojas-de-estilo/ReporteFormulario.css';
 
 
 function ReporteFormulario(props) {
+    let idn = 0;
 
     const [input, setInput] = useState('');
 
@@ -16,10 +17,11 @@ function ReporteFormulario(props) {
 
         const reporteNuevo = {
             //   Aqui se asignan los valores a enviar a cada Reporte
-            id: 10,
+            id: idn,
             texto: input
             // id y texto como ejemplo, en teoria sacado de la base de datos
         }
+        idn = idn + 1;
 
         props.onSubmit(reporteNuevo);
     }

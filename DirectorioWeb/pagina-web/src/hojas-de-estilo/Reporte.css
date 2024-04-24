@@ -1,35 +1,21 @@
 .reporte-contenedor {
     min-width: 300px;
     min-height: 300px;
-    background-color: #1b1b32;
+    background-color: rgb(210, 210, 210);
     margin: 5px 5px;
-    padding: 8px 15px 8px 20px;
-    display: flex;
-    justify-content: space-between;
+    padding: 15px 20px 10px 20px;
+    display: inline;
+    justify-content: center;
     align-items: center;
     border-radius: 7px;
     border: 1px solid white;
     cursor: pointer;
 }
 
-
-
-.reporte-contenedor:nth-child(3n + 1) {
-    background-color: #1b1b32;
-}
-
-.reporte-contenedor:nth-child(3n + 2) {
-    background-color: #2a2a40;
-}
-
-.reporte-contenedor:nth-child(3n + 3) {
-    background-color: #3b3b4f;
-}
-
-
 .reporte-texto {
+    /* background-color: black; */
     width: 100%;
-    height: 100%;
+    height: 25px;
     font-size: 20px;
     display: flex;
     align-items: center;
@@ -37,6 +23,8 @@
 }
 
 .reporte-icono {
+    float: right;
+    background-color: aqua;
     width: 25px;
     height: 25px;
     margin: 5px;

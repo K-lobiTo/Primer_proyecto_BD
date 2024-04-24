@@ -1,22 +1,19 @@
-
 import React, { useState } from 'react';
-import '../hojas-de-estilo/PaginaInicio.css';
-import BotonM from '../componentes/BotonM';
-import MatrizReportes from '../componentes/MatrizReportes';
+import '../hojas-de-estilo/PaginaMisPublicaciones.css';
 
-function Inicio() {  // usuarioID
+function MisPublicaciones() {
 
-    const abrirMisPublicaciones = () => {
-        //          Abrir mis publicaciones, con la informacion de usuario
+    const volverInicio = () => {
+        //logica de volver al inicio, conservando el usuario
     }
 
     return (
-        <div className='form-inicio'>
+        <div className='form-mis-publicaciones'>
             <div className='contenedor-info-usuario'>
                 <div className='boton-ver-public'>
                     <BotonM
-                        texto={'  Ver mis publicaciones  '}
-                        handleClick={abrirMisPublicaciones}
+                        texto={'  Volver  '}
+                        handleClick={volverInicio}
                     />
                 </div>
                 <div className='informacion-usuario'>
@@ -37,4 +34,4 @@ function Inicio() {  // usuarioID
     );
 }
 
-export default Inicio;
+export default MisPublicaciones;

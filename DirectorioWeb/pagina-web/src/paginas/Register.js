@@ -18,7 +18,7 @@ function Register() {
         if (nombre !== '' && apellidos !== '' && pais !== '' && direccion !== '' && userName !== '' && correo !== '' && password !== '') {
             try {
 
-                const response = await axios.post('http://localhost:9000/register',{
+                const response = await axios.post('http://localhost:9000/register', {
                     name: nombre,
                     last_name: apellidos,
                     country: pais,
@@ -26,16 +26,18 @@ function Register() {
                     user: userName,
                     mail: correo,
                     password: password
-                },{
+                }, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 });
 
-                window.location.href='/inicio';
+                window.location.href = '/inicio';
+                console.log('cae en el try');
 
-                console.log('Datos enviados correctamente!\n',response.data);
+                console.log('Datos enviados correctamente!\n', response.data);
             } catch (error) {
+                console.log('cae en el catch');
                 console.error('Error al enviar datos: ', error);
             }
         } else console.log('Algun dato se encuentra vacio\n');
@@ -44,7 +46,7 @@ function Register() {
     return (
         <div className='form-register'>
             <h1>Registro</h1>
-            <form /*onSubmit = {handleSubmit}*/> 
+            <form /*onSubmit = {handleSubmit}*/>
                 <TextSpace placeHold={'Nombre'} tipo={'text'} getInput={setNombre} />
                 <TextSpace placeHold={'Apellidos'} tipo={'text'} getInput={setApellidos} />
                 <TextSpace placeHold={'País'} tipo={'text'} getInput={setPais} />
