@@ -1,8 +1,8 @@
 .reporte-contenedor {
-    width: 500px;
-    min-height: 65px;
+    min-width: 300px;
+    min-height: 300px;
     background-color: #1b1b32;
-    margin: 5px 0;
+    margin: 5px 5px;
     padding: 8px 15px 8px 20px;
     display: flex;
     justify-content: space-between;
