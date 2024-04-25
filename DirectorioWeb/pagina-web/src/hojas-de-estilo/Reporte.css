@@ -22,9 +22,15 @@
     overflow-wrap: anywhere;
 }
 
+.reporte-contenedor-iconos {
+    background-color: blue;
+    margin-bottom: 35px;
+}
+
 .reporte-icono {
+    /* background-color: aqua; */
     float: right;
-    background-color: aqua;
+    /* background-color: aqua; */
     width: 25px;
     height: 25px;
     margin: 5px;

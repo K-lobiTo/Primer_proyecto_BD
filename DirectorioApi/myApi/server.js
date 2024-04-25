@@ -124,6 +124,48 @@ app.post('/get/observations', async (req, res) => {
     }
 })
 
+app.post('/get/identifications', async (req, res) => {
+    const sql = `SELECT* FROM JOSHUA.Identification WHERE id_user = :1`; //hay que cambiar lo que devuelve
+    const id = req.body.id_user;
+    try {
+        const connection = await oracledb.getConnection(dbConfig);
+        const consult = await connection.execute(sql, [id]);
+        //aqui se puede verificar si la consulta no obtuvo nada
+        res.json(consult.rows);
+        await connection.close();
+    } catch {
+        res.send('Error\n');
+    }
+})
+
+
+app.post('/get/all/observations', async (req, res) => {
+    const sql = `SELECT* FROM JOSHUA.Observacion WHERE id_taxon = :1`; //hay que cambiar lo que devuelve
+    const id = req.body.id_user;
+    try {
+        const connection = await oracledb.getConnection(dbConfig);
+        const consult = await connection.execute(sql, [id]);
+        //aqui se puede verificar si la consulta no obtuvo nada
+        res.json(consult.rows);
+        await connection.close();
+    } catch {
+        res.send('Error\n');
+    }
+})
+
+app.post('/get/all/identifications', async (req, res) => {
+    const sql = `SELECT* FROM JOSHUA.Identificacion WHERE id_taxon = :1`; //hay que cambiar lo que devuelve
+    const id = req.body.id_user;
+    try {
+        const connection = await oracledb.getConnection(dbConfig);
+        const consult = await connection.execute(sql, [id]);
+        //aqui se puede verificar si la consulta no obtuvo nada
+        res.json(consult.rows);
+        await connection.close();
+    } catch {
+        res.send('Error\n');
+    }
+})
 
 
 

@@ -6,6 +6,7 @@ import Login from './paginas/Login';
 import Register from './paginas/Register';
 // import DeleteBotton from './componentes/DeleteBotton';
 import Inicio from './paginas/Inicio';
+import MisPublicaciones from './paginas/MisPublicaciones';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path='/inicio' element={<Inicio />} />
+          <Route path='/mispublicaciones' element={<MisPublicaciones />} />
         </Routes>
       </BrowserRouter>
 

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import '../hojas-de-estilo/PaginaMisPublicaciones.css';
+import BotonM from '../componentes/BotonM';
+import MatrizReportes from '../componentes/MatrizReportes';
 
 function MisPublicaciones() {
 
@@ -10,7 +12,7 @@ function MisPublicaciones() {
     return (
         <div className='form-mis-publicaciones'>
             <div className='contenedor-info-usuario'>
-                <div className='boton-ver-public'>
+                <div className='boton-volver-inicio'>
                     <BotonM
                         texto={'  Volver  '}
                         handleClick={volverInicio}
@@ -20,14 +22,13 @@ function MisPublicaciones() {
                     {/* Aqui va el perfil de usuario */}
                     <BotonM
                         texto={' Probando '}
-                        handleClick={abrirMisPublicaciones}
                     />
                 </div>
             </div>
-            <div className='contenedor-buscar-reportes'>
-                <h1>Buscar publicaciones</h1>
+            <div className='contenedor-mis-reportes'>
+                <h1>Mis publicaciones</h1>
                 <MatrizReportes
-                    borrable={false}
+                    borrable={true}
                 />
             </div>
         </div >
