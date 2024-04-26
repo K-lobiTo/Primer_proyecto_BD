@@ -4,6 +4,8 @@ const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs');
 
+
+
 function hash(chain) {
     let r = 0;
     let potp1 = 1;
@@ -72,7 +74,20 @@ app.post('/', upload.single('image'), async (req, res) => { //.any() para acepta
 
 
 
+app.put('/update/identification', async(req,res) => {
+    const data = req.body;
+    try{
+        const connection = await oracledb.getConnection(dbConfig);
 
+        await connection.commit();
+        await connection.close();
+        res.send('ok!')
+        console.log('ok!');
+    } catch(err){
+        res.send('Error')
+        console.log(err);
+    }
+})
 
 
 
@@ -172,11 +187,58 @@ app.post('/get/all/identifications', async (req, res) => {
 
 
 
+app.post('/create/observation', async (req, res) => {
+    //const sql1 = `SELECT SYS_CONNECT_BY_PATH(Name,'/') "Path" FROM JOSHUA.Taxonomia WHERE Name = :1 START WITH id_mitata = 0 CONNECT BY PRIOR id_taxon = id_mitata`;
+    const sql1 = `SELECT id_taxon FROM JOSHUA.Taxonomia WHERE Name = :1`; //no hace falta recorrer todo
+    const sql2 = `INSERT INTO JOSHUA.Observacion(id_user,id_taxon,id_image,Comment,Latitud,Longitud) VALUES(:1,:2,:3,:4,:5,:6)`;
+    const data = req.body;
+
+    /* Debo recibir:
+        id_user
+        dato_animal
+        id_image
+        Comment
+        latitud
+        longitud
+    */
+
+    try{
+        const connection = await oracledb.getConnection(dbConfig);
+        const id_taxon = await connection.execute(sql1,[data.dato_animal]);
+        await connection.execute(sql2,[data.id_user,id_taxon,data.id_image,data.Comment,data.Latitud,data.Longitud]);
+        await connection.commit();
+        await connection.close();
+        res.send('ok!');
+        console.log('ok!');
+
+    } catch(err){
+        console.log(err);
+        res.send('Error');
+    }
+
+})
 
 
-
-
-
+app.post('/create/identification', async(req,res) => {
+    const sql = `INSERT INTO JOSHUA.Identificacion(Period,id_observation,id_user,Comment) VALUES(SYSDATE,:1,:2,:3)`;
+    const data = req.body;
+    /* Debo recibir:
+        id_observation
+        id_user
+        Comment
+    */
+   try{
+        const connection = await oracledb.getConnection(dbConfig); 
+        await connection.execute(sql,[data.id_observation, data.id_user, data.Comment]);
+        await connection.commit();
+        await connection.close();
+        res.send('ok!');
+        console.log('ok!');
+   } catch(err){
+        console.log(err);
+        res.send('Error');
+   }
+})
 
 //``
 
@@ -224,7 +286,7 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
     const data = req.body;
     const hash_pass = hash(data.password);
-    const verificar = `SELECT id_user, Name, Last_name, Mail FROM JOSHUA.Usuario WHERE Mail = :1 AND Password = :2`;
+    const verificar = `SELECT id_user, Name, Last_name, Mail FROM JOSHUA.Persona WHERE Mail = :1 JOIN JOSHUA.Usuario WHERE Password = :2`;
     try {
 
         const connection = await oracledb.getConnection(dbConfig);
