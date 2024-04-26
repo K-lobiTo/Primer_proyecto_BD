@@ -4,10 +4,10 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import BotonM from './BotonM';
 import TextoPerso from './TextoPerso';
 
-function Reporte({ id, texto, verReporte, eliminarReporte, borrable }) {
+function Reporte({ id, texto, verReporte, eliminarReporte }) { //esUsuario
     return (
         <div className='reporte-contenedor'>
-            {borrable ?
+            {true ? //esUsuario
                 <div
                     className='reporte-contenedor-iconos'
                     onClick={() => eliminarReporte(id)}>

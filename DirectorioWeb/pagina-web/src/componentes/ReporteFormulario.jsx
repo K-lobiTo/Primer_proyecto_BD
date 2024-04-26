@@ -2,45 +2,88 @@ import React, { useState } from 'react';
 import '../hojas-de-estilo/ReporteFormulario.css';
 
 
-function ReporteFormulario(props) {
-    let idn = 0;
-
+function ReporteFormulario({ agregarReporte, eliminarTodos, mostrarTodosUsuario, mostrarTodos, mostrarCoincidencias, mostrarCoincidenciasUsuario, mierda }) {
+    const [indice, setIndice] = useState(0); //Esto es temporal para asignar ID unicos
     const [input, setInput] = useState('');
+    console.log(mierda);
 
     const manejarCambio = e => {
+        console.log(input);
         setInput(e.target.value);
+        console.log(input);
+        // props.eliminartodos();
+
+        if (input === '') {
+            mierda ?
+                mostrarTodosUsuario() : mostrarTodos();
+        }
+        else {
+            mierda ?
+                mostrarCoincidenciasUsuario(input) : mostrarCoincidencias(input);
+        }
         // Aqui se pondria que mande a la base de datos a buscar algo similar a los escrito actualmente
     }
 
+    // const agregarReportes = (reporteAgregado) => {
+    //     // lo que dice el nombre, se crean como 
+    //     const reporteNuevo = {
+    //         //   Aqui se asignan los valores a enviar a cada Reporte
+    //         id: indice,
+    //         texto: input
+    //         // fecha: reporteAgregado.fecha  // este es un ejemplo
+
+    //         // id y texto como ejemplo, en teoria sacado de la base de datos
+    //     };
+    //     console.log(indice);
+    //     setIndice(indice + 1);
+    //     props.agregarReporte(reporteNuevo);
+    // }
+
+
     const manejarEnvio = e => {
+        //Aqui realmente se necesitaria buscar las observaciones 
+        // de la bases de datos crearlas y mostrarlas
+        // se debe añadir un condicional dependiendo de si se requieren las del usuario, o todas
         e.preventDefault();
+        console.log('clickeado');
+        console.log(input);
 
-        const reporteNuevo = {
-            //   Aqui se asignan los valores a enviar a cada Reporte
-            id: idn,
-            texto: input
-            // id y texto como ejemplo, en teoria sacado de la base de datos
-        }
-        idn = idn + 1;
+        // const reporteNuevo = props.esUsuario ? {
+        //     //   Aqui se asignan los valores a enviar a cada Reporte
+        //     id: indice,
+        //     texto: input
+        //     // id y texto como ejemplo, en teoria sacado de la base de datos
+        // } :
+        //     {
+        //         id: indice,
+        //         texto: input
+        //     };
 
-        props.onSubmit(reporteNuevo);
+        // console.log(indice);
+        // setIndice(indice + 1);
+        // props.agregarReporte(reporteNuevo);
     }
 
     return (
         <form
             className='reporte-formulario'
-            onSubmit={manejarEnvio}>
+            // onSubmit={manejarEnvio}>      Anterior
+
+            //handleClick
+            onSubmit={manejarEnvio}
+        >
+            {/* Este es el Submit de darle al boton, lo cual no va a existir */}
             <input
                 className='reporte-input'
                 type='text'
                 placeholder='Escribe el nombre de la especie'
                 name='texto'
-                onChange={manejarCambio}
+                onChange={manejarCambio} // manejarCambio
             />
             <button className='reporte-boton'>
                 Buscar reporte
             </button>
-        </form>
+        </form >
     );
 }
 

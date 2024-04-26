@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import '../hojas-de-estilo/PaginaInicio.css';
 import BotonM from '../componentes/BotonM';
 import MatrizReportes from '../componentes/MatrizReportes';
@@ -30,7 +30,7 @@ function Inicio() {  // usuarioID
             <div className='contenedor-buscar-reportes'>
                 <h1>Buscar publicaciones</h1>
                 <MatrizReportes
-                    borrable={false}
+                // esUsuario={false}
                 />
             </div>
         </div >

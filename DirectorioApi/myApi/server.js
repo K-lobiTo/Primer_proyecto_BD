@@ -81,12 +81,14 @@ app.post('/', upload.single('image'), async (req, res) => { //.any() para acepta
 
 
 
-app.post('/delete/observation', async (req, res) => {
+app.post('/delete/observation', async (req, res) => { //VERIFICAR EL ORDEN EN EL QUE SE EJECUTAN LAS CONSULTAS
     const id = req.body.id_observation;
-    const sql = `DELETE FROM JOSHUA.Observacion WHERE id_observation = :1`;
-    try { //se asume que la fila ya esta creada por lo que no se verifica si existe
+    const sql1 = `DELETE FROM JOSHUA.Observacion WHERE id_observation = :1`;
+    const sql2 = `DELETE FROM JOSHUA.Identificacion WHERE id_observation = :1`; //hay que borrar todas las identificaciones
+    try {
         const connection = await oracledb.getConnection(dbConfig);
-        await connection.execute(sql, [id]);
+        await connection.execute(sql2, [id]);
+        await connection.execute(sql1, [id]);
         await connection.commit();
         await connection.close();
         console.log('GG');
@@ -176,18 +178,21 @@ app.post('/get/all/identifications', async (req, res) => {
 
 
 
-
+//``
 
 app.post('/register', async (req, res) => {
     const data = req.body;
     const hash_pass = hash(data.password);
     const country = data.country.toUpperCase(); //tener cuidado con el orden de los valores sql
-    const insertar_usuario = `INSERT INTO JOSHUA.Usuario(Name, Last_name, Direction, Password, Mail, id_country) VALUES (:1,:2,:3,:4,:5,:6)`;
     const sacar_pais = `SELECT id_country FROM JOSHUA.Pais WHERE Name = :1`;
     const verificar = `SELECT id_user FROM JOSHUA.Usuario WHERE Mail = :1`;
+    const insertar_persona = `INSERT INTO JOSHUA.Persona(Name, Last_name, Direction, Mail, id_country) VALUES(:1,:2,:3,:4,:5)`;
+    const sacar_persona = `SELECT id_persona FROM JOSHUA.Persona WHERE Mail = :1`;
+    const insertar_usuario = `INSERT INTO JOSHUA.Usuario(id_persona, Password) VALUES (:1,:2)`;
     try {
 
         const connection = await oracledb.getConnection(dbConfig);
+
         const consult1 = await connection.execute(sacar_pais, [country]);
         const consult2 = await connection.execute(verificar, [data.mail]);
 
@@ -196,7 +201,12 @@ app.post('/register', async (req, res) => {
         } else {
 
             const id = consult1.rows[0][0];
-            await connection.execute(insertar_usuario, [data.name, data.last_name, data.direction, hash_pass, data.mail, id]);
+
+            await connection.execute(insertar_persona, [data.name, data.last_name, data.direction, data.mail, id]);
+            const consult3 = await connection.execute(sacar_persona, [data.mail]);
+            const person = consult3.rows[0][0];
+            await connection.execute(insertar_usuario, [person, hash_pass]);
+
             await connection.commit();
 
         } await connection.close();
