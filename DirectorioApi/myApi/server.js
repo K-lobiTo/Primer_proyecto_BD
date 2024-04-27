@@ -73,12 +73,17 @@ app.post('/', upload.single('image'), async (req, res) => { //.any() para acepta
 
 
 
-
-app.put('/update/identification', async(req,res) => {
+//debe ser put
+app.post('/update/identification', async(req,res) => {
     const data = req.body;
+    const sql = `UPDATE JOSHUA.Identificacion SET Period = SYSDATE, Comment = :1 WHERE id_identification = :2`;
     try{
+        /* Debo recibir:
+            Comment (comentario nuevo)
+            id_identification
+         */
         const connection = await oracledb.getConnection(dbConfig);
-
+        await connection.execute(sql,[data.Comment, data.id_identification]);
         await connection.commit();
         await connection.close();
         res.send('ok!')
@@ -187,27 +192,65 @@ app.post('/get/all/identifications', async (req, res) => {
 
 
 
-app.post('/create/observation', async (req, res) => {
-    //const sql1 = `SELECT SYS_CONNECT_BY_PATH(Name,'/') "Path" FROM JOSHUA.Taxonomia WHERE Name = :1 START WITH id_mitata = 0 CONNECT BY PRIOR id_taxon = id_mitata`;
-    const sql1 = `SELECT id_taxon FROM JOSHUA.Taxonomia WHERE Name = :1`; //no hace falta recorrer todo
+app.post('/create/observation', upload.single('image'), async (req, res) => {
+    const sql1 = `SELECT id_taxon FROM JOSHUA.Taxonomia WHERE Name = :1`; 
     const sql2 = `INSERT INTO JOSHUA.Observacion(id_user,id_taxon,id_image,Comment,Latitud,Longitud) VALUES(:1,:2,:3,:4,:5,:6)`;
+    const sql3 = `SELECT id_license FROM JOSHUA.Licencia WHERE Name = :1`;
+    const sql4 =`SELECT id_persona FROM JOSHUA.Persona WHERE Mail = :1`;
+    const sql5 =`INSERT INTO JOSHUA.Imagen(Image,Period,id_persona,id_license) VALUES(:1,:2,:3,:4)`;
+    const sql6 = `SELECT id_image FROM JOSHUA.Imagen WHERE DBMS_LOB.COMPARE(Image,:1) = 0`;
+    //const sql7 = '';
+    
     const data = req.body;
+    const img = req.file;
+    const imagebuffer = fs.readFileSync(img.path);
 
     /* Debo recibir:
         id_user
         dato_animal
-        id_image
+        Image (BLOB)
         Comment
         latitud
         longitud
+        Name (nombre de licencia)
+        Mail del fotografo
+
     */
 
     try{
         const connection = await oracledb.getConnection(dbConfig);
-        const id_taxon = await connection.execute(sql1,[data.dato_animal]);
-        await connection.execute(sql2,[data.id_user,id_taxon,data.id_image,data.Comment,data.Latitud,data.Longitud]);
+        const consult1 = await connection.execute(sql4,[data.Mail]);
+        const consult2 = await connection.execute(sql3,[data.Name]);
+        const consult3 = await connection.execute(sql1,[data.dato_animal]);
+
+        //falta verificar si la persona no existe
+
+        const id_persona = consult1.rows[0][0];
+        const id_license = consult2.rows[0][0];
+
+
+        
+
+        //verificar si la imagen ya esta insertada
+        var consult4 = await connection.execute(sql6,[Buffer.from(imagebuffer, 'binary')]);
+
+        if(consult4.rows.length == 0) {
+            await connection.execute(sql5,[data.Image,data.Period,id_persona,id_license]);
+        }
+
+        consult4 = await connection.execute(sql6,[Buffer.from(imagebuffer, 'binary')]);
+
+
+
+
+
+        const id_taxon = consult3.rows[0][0];
+        const id_image = consult4.rows[0][0];
+
+        await connection.execute(sql2,[data.id_user,id_taxon,id_image,data.Comment,data.Latitud,data.Longitud]);
         await connection.commit();
         await connection.close();
+        fs.unlinkSync(img.path);
         res.send('ok!');
         console.log('ok!');
 
@@ -242,7 +285,7 @@ app.post('/create/identification', async(req,res) => {
 
 //``
 
-app.post('/register', async (req, res) => {
+app.post('/register', async (req, res) => { //modificarlo por si existe un person que no sea usuario
     const data = req.body;
     const hash_pass = hash(data.password);
     const country = data.country.toUpperCase(); //tener cuidado con el orden de los valores sql
@@ -283,10 +326,10 @@ app.post('/register', async (req, res) => {
     }
 })
 
-app.post('/login', async (req, res) => {
+app.post('/login', async (req, res) => { //cuidado con la consulta sql
     const data = req.body;
     const hash_pass = hash(data.password);
-    const verificar = `SELECT id_user, Name, Last_name, Mail FROM JOSHUA.Persona WHERE Mail = :1 JOIN JOSHUA.Usuario WHERE Password = :2`;
+    const verificar = `SELECT id_user, Name, Last_name, Mail FROM JOSHUA.Persona WHERE Mail = :1 JOIN JOSHUA.Usuario ON Password = :2`;
     try {
 
         const connection = await oracledb.getConnection(dbConfig);
@@ -311,9 +354,6 @@ app.listen(PORT, () => {
     console.log('Escuchando el puerto: ' + PORT);
 });
 
-
+//const sql3 = `SELECT SYS_CONNECT_BY_PATH(Name,'/') "Path" FROM JOSHUA.Taxonomia WHERE Name = :1 START WITH id_mitata = 0 CONNECT BY PRIOR id_taxon = id_mitata`;
 //curl -X POST http://localhost:9000/register
 //curl -X POST -H "Content-Type: application/json" -d '{"nombre": "Juan", "edad": 30}' http://localhost:3000/mi-ruta
-//``
-
-
