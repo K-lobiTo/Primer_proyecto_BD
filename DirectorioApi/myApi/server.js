@@ -5,7 +5,6 @@ const multer = require('multer');
 const fs = require('fs');
 
 
-
 function hash(chain) {
     let r = 0;
     let potp1 = 1;
@@ -375,15 +374,12 @@ app.listen(PORT, () => {
     console.log('Escuchando el puerto: ' + PORT);
 });
 
-//const sql3 = `SELECT SYS_CONNECT_BY_PATH(Name,'/') "Path" FROM JOSHUA.Taxonomia WHERE Name = :1 START WITH id_mitata = 0 CONNECT BY PRIOR id_taxon = id_mitata`;
-
-
-//curl -X POST http://localhost:9000/register
-
 
 //curl -X POST -H "Content-Type: application/json" -d '{"name": "Miguel", "last_name": "Ramirez", "direction": "Alajuela, R2", "mail": "Migueru.1085@gmail.com", "country": "Francia", "password": "1234567890987654321"}' http://localhost:9000/register
 
+
 //curl -X POST -H "Content-Type: application/json" -d '{"id_taxon": 14, "id_image": 1}' http://localhost:9000/get/image/taxon
+
 
 //curl -X POST -H "Content-Type: application/json" -d '{"mail": "joshua.jimenez@gmail.com", "password": "pedro_pica_piedra"}' http://localhost:9000/login
 
@@ -398,3 +394,15 @@ app.listen(PORT, () => {
 
 
 //curl -X POST -H "Content-Type: application/json" -d '{"id_identification": 2, "Commentary": "God-Freddy"}' http://localhost:9000/update/identification
+
+
+//curl -X POST -H "Content-Type: application/json" -d '{"id_observation": 1}' http://localhost:9000/delete/observation
+
+
+//curl -X POST -H "Content-Type: application/json" -d '{"id_user": 1}' http://localhost:9000/get/observations
+
+
+//curl -X POST -H "Content-Type": "multipart/form-data" -d '{ }' http://localhost:9000/create/observation
+
+
+
