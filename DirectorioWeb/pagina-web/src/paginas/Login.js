@@ -3,17 +3,23 @@ import BotonM from '../componentes/BotonM';
 import TextSpace from '../componentes/TextSpace';
 import '../hojas-de-estilo/PaginaLogin.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 function Login() {
+
     const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (mail !== '' && password !== '') {
             try {
+                console.log(mail);
+                console.log(password);
+                navigate('/inicio', { state: { usrMail: mail.trim() } })
                 const data = {
                     mail: mail,
                     password: password
@@ -24,7 +30,9 @@ function Login() {
                     }
                 });
 
-                window.location.href = '/inicio';
+                // window.location.href = '/inicio';
+                // navigate('/inicio', { state: { usrMail: mail.trim() } })
+
 
                 console.log('Datos enviados correctamente!', response.data);
             } catch {

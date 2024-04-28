@@ -3,6 +3,7 @@ import '../hojas-de-estilo/PaginaRegister.css';
 import TextSpace from '../componentes/TextSpace';
 import BotonM from '../componentes/BotonM';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
     const [nombre, setNombre] = useState('');
@@ -12,8 +13,10 @@ function Register() {
     const [userName, setName] = useState('');
     const [correo, setCorreo] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
+        navigate('/login');
         e.preventDefault();
         if (nombre !== '' && apellidos !== '' && pais !== '' && direccion !== '' && userName !== '' && correo !== '' && password !== '') {
             try {
@@ -32,10 +35,12 @@ function Register() {
                     }
                 });
 
-                window.location.href = '/inicio';
                 console.log('cae en el try');
 
                 console.log('Datos enviados correctamente!\n', response.data);
+                // AQUI DEBE IR EL CAMBIO DE PAGINA A LA PAGINA Login.js 
+                navigate('/login');
+
             } catch (error) {
                 console.log('cae en el catch');
                 console.error('Error al enviar datos: ', error);
@@ -54,7 +59,10 @@ function Register() {
                 <TextSpace placeHold={'Nombre de usuario'} tipo={'text'} getInput={setName} />
                 <TextSpace placeHold={'Correo Electrónico'} tipo={'text'} getInput={setCorreo} />
                 <TextSpace placeHold={'Cree una contraseña'} tipo={'password'} getInput={setPassword} />
-                <BotonM texto={'Registrarse'} handleClick={handleSubmit} />
+                <BotonM
+                    texto={'Registrarse'}
+                    handleClick={handleSubmit}
+                />
             </form>
         </div>
     );

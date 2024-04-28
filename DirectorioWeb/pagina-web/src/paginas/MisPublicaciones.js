@@ -2,18 +2,25 @@ import React from 'react';
 import '../hojas-de-estilo/PaginaMisPublicaciones.css';
 import BotonM from '../componentes/BotonM';
 import MatrizReportes from '../componentes/MatrizReportes';
+import { useLocation, useNavigate } from 'react-router-dom';
+import TextoPerso from '../componentes/TextoPerso';
 // import Select from 'react-select'
 
 function MisPublicaciones() {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const usrMail = location.state?.mail;
+    const usrID = location.state?.usrID;
+
 
     const volverInicio = () => {
+        navigate('/inicio', { state: { usrMail: usrMail } })
         //logica de volver al inicio, conservando el usuario
     }
 
     const crearPublicacion = () => {
-        // aqui lo manda al menu de observacion, y despues de realizar este proceso lo devuelve al inicio
-        // idealmente devolveria a esta misma pagina, pero para eso seria necesario actualizar la matriz de
-        // mis publicaciones, lo cual es complicado, o no
+        navigate('/menuobservacion', { state: { usrID: usrID } })
+        // la idea es que despues de esto se devuelva aqui mismo, en esta pagina
     }
 
     return (
@@ -27,6 +34,10 @@ function MisPublicaciones() {
                 </div>
                 <div className='informacion-usuario'>
                     {/* Aqui va el perfil de usuario */}
+                    <TextoPerso
+                        placeHold={'Correo de Usuario: '}
+                        texto={usrMail}
+                    />
                     <BotonM
                         texto={' Crear Nueva Publicación '}
                         handleClick={crearPublicacion}

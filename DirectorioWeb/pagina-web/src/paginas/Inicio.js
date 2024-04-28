@@ -3,10 +3,18 @@ import React from 'react';
 import '../hojas-de-estilo/PaginaInicio.css';
 import BotonM from '../componentes/BotonM';
 import MatrizReportes from '../componentes/MatrizReportes';
+import TextoPerso from '../componentes/TextoPerso';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-function Inicio() {  // usuarioID
+function Inicio(props) {  // usuarioID
+    const navigate = useNavigate();
+    const location = useLocation();
+    const usrMail = location.state?.usrMail;
 
     const abrirMisPublicaciones = () => {
+        console.log(usrMail);
+        navigate('/mispublicaciones', { state: { usrID: 1, mail: usrMail } })
+
         //          Abrir mis publicaciones, con la informacion de usuario
     }
 
@@ -21,9 +29,13 @@ function Inicio() {  // usuarioID
                 </div>
                 <div className='informacion-usuario'>
                     {/* Aqui va el perfil de usuario */}
+                    <TextoPerso
+                        placeHold={'Correo de Usuario: '}
+                        texto={usrMail}
+                    />
                     <BotonM
                         texto={' Probando '}
-                        handleClick={abrirMisPublicaciones}
+                        handleClick={console.log(usrMail)}
                     />
                 </div>
             </div>

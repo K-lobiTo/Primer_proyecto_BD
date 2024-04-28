@@ -1,7 +1,7 @@
 import React from 'react';
 import '../hojas-de-estilo/ComponenteTexto.css'
 
-function ComponenteTexto({change, placHold, ubic}){
+function ComponenteTexto({ change, placHold }) {
     //const [texto, setTexto] = useState('');
 
     const handleChange = (event) => {
@@ -10,11 +10,11 @@ function ComponenteTexto({change, placHold, ubic}){
 
     }
 
-    return(
-        <input 
-            className= {ubic?'contenedor-texto-ubicacion' : 'contenedor-texto'}
+    return (
+        <textarea
+            className='contenedor-texto'
             id='input-texto'
-            type="text"
+            contentEditable
             name='texto'
             placeholder={placHold}
             onChange={handleChange}

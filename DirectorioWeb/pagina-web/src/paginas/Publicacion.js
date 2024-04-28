@@ -26,7 +26,7 @@ function Publicacion() {
                 <div className='informacion-usuario'>
                     {/* Aqui va el perfil de usuario */}
                     <BotonM
-                        texto={'    '}
+                        texto={'  pinga  '}
                         handleClick={nada}
                     />
                 </div>
