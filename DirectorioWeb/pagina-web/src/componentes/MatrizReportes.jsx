@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReporteFormulario from './ReporteFormulario';
 import Reporte from './Reporte';
 import '../hojas-de-estilo/MatrizReportes.css';
 
-function MatrizReportes() {
+function MatrizReportes({ esUsuario }) {
     // esUsuario
     const [reportes, setReportes] = useState([]);
     const [ind, setInd] = useState(0);
@@ -15,28 +15,45 @@ function MatrizReportes() {
 
             const reportesActualizados = [reporte, ...reportes];
             setReportes(reportesActualizados);
+            console.log(reportesActualizados);
         }
     }
 
+    //aqui debe tomar todos los valores de las observaciones del Usuario
     const mostrarTodosUsuario = () => {
-        //aqui debe tomar todos los valores de las observaciones del Usuario
         const ejemplo = ['Facebook', 'Instagram', 'YouTube'];
 
-        // ejemplo.map(item => {
-        //     console.log(item);
-        // });
-        // ejemplo.map(tex => {
-        //     const reporteNuevo = {
-        //         id: ind,
-        //         texto: tex
-        //     }
-        //     agregarReporte(reporteNuevo);
-        //     console.log(tex);
-        //     //En este caso agregarReporte deberia encargarse de no meter
-        //     //reportes repetidos, mediante el id
-        //     setInd(ind + 1);
-        // });
+        setReportes(prevReportes => {
+            return ejemplo.map((texto, i) => ({
+                id: prevReportes.length + i,
+                texto: texto
+            }));
+        });
+
     }
+
+    // for (let i = 0; i < ejemplo.length; i++) {
+    //     const reporteNuevo = {
+    //         id: i,
+    //         texto: ejemplo[i]
+    //     }
+    //     agregarReporte(reporteNuevo);
+    //     console.log(ejemplo[i], ' indice ', i);
+    //     //En este caso agregarReporte deberia encargarse de no meter
+    //     //reportes repetidos, mediante el id
+    // }
+    // ejemplo.map(tex => {
+    //     const reporteNuevo = {
+    //         id: ind,
+    //         texto: tex
+    //     }
+    //     agregarReporte(reporteNuevo);
+    //     console.log(tex);
+    //     //En este caso agregarReporte deberia encargarse de no meter
+    //     //reportes repetidos, mediante el id
+    //     setInd(ind + 1);
+    //     console.log(ind);
+    // });
 
     const mostrarTodos = () => {
         console.log('mostrarTodos()');
@@ -78,13 +95,13 @@ function MatrizReportes() {
     return (
         <>
             <ReporteFormulario
-                agregarReporte={agregarReporte}
-                eliminarTodos={eliminarTodos}
+                // agregarReporte={agregarReporte}
+                // eliminarTodos={eliminarTodos}
                 mostrarTodosUsuario={mostrarTodosUsuario}
                 mostrarTodos={mostrarTodos}
                 mostrarCoincidencias={mostrarCoincidencias}
                 mostrarCoincidenciasUsuario={mostrarCoincidenciasUsuario}
-                mierda={false}
+                esUsr={esUsuario}
             />
             <div className='reportes-matriz-contenedor'>
                 {
@@ -94,7 +111,7 @@ function MatrizReportes() {
                             id={reporte.id}
                             texto={reporte.texto}
                             verReporte={verReporte}
-                            // esUsuario={true}
+                            esUsuario={esUsuario}
                             eliminarReporte={eliminarReporte} />
                     )
                 }

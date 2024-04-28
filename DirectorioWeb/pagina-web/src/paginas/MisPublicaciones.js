@@ -36,7 +36,7 @@ function MisPublicaciones() {
             <div className='contenedor-mis-reportes'>
                 <h1>Mis publicaciones</h1>
                 <MatrizReportes
-                // esUsuario={true}
+                    esUsuario={true}
                 />
             </div>
         </div >

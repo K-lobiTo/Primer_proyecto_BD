@@ -30,7 +30,7 @@ function Inicio() {  // usuarioID
             <div className='contenedor-buscar-reportes'>
                 <h1>Buscar publicaciones</h1>
                 <MatrizReportes
-                // esUsuario={false}
+                    esUsuario={false}
                 />
             </div>
         </div >

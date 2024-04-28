@@ -1,28 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../hojas-de-estilo/ReporteFormulario.css';
 
 
-function ReporteFormulario({ agregarReporte, eliminarTodos, mostrarTodosUsuario, mostrarTodos, mostrarCoincidencias, mostrarCoincidenciasUsuario, mierda }) {
-    const [indice, setIndice] = useState(0); //Esto es temporal para asignar ID unicos
+function ReporteFormulario({ mostrarTodosUsuario, mostrarTodos, mostrarCoincidencias, mostrarCoincidenciasUsuario, esUsr }) {
+    // const [indice, setIndice] = useState(0); //Esto es temporal para asignar ID unicos
     const [input, setInput] = useState('');
-    console.log(mierda);
 
-    const manejarCambio = e => {
+    const manejarCambio = (e) => {
+
         console.log(input);
         setInput(e.target.value);
-        console.log(input);
+    };
+
+    useEffect(() => {
+        console.log('este es el useEffect: ', input, esUsr);
         // props.eliminartodos();
 
         if (input === '') {
-            mierda ?
+            esUsr ?
                 mostrarTodosUsuario() : mostrarTodos();
         }
         else {
-            mierda ?
+            esUsr ?
                 mostrarCoincidenciasUsuario(input) : mostrarCoincidencias(input);
         }
         // Aqui se pondria que mande a la base de datos a buscar algo similar a los escrito actualmente
-    }
+    }, [input]);
 
     // const agregarReportes = (reporteAgregado) => {
     //     // lo que dice el nombre, se crean como 
