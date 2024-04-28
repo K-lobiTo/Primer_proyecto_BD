@@ -71,7 +71,7 @@ app.post('/', upload.single('image'), async (req, res) => { //.any() para acepta
 
 
 app.post('/create/identification', async(req,res) => {
-    const sql = `INSERT INTO JOSHUA.Identificacion(Period,id_observation,id_user,Comment) VALUES(SYSDATE,:1,:2,:3)`;
+    const sql = `INSERT INTO JOSHUA.Identificacion(Period,id_observation,id_user,Commentary) VALUES(SYSDATE,:1,:2,:3)`;
     const data = req.body;
     /* Debo recibir:
         id_observation
@@ -80,14 +80,14 @@ app.post('/create/identification', async(req,res) => {
     */
    try{
         const connection = await oracledb.getConnection(dbConfig); 
-        await connection.execute(sql,[data.id_observation, data.id_user, data.Comment]);
+        await connection.execute(sql,[data.id_observation, data.id_user, data.Commentary]);
         await connection.commit();
         await connection.close();
-        res.send('ok!');
+        res.send('ok!\n');
         console.log('ok!');
    } catch(err){
         console.log(err);
-        res.send('Error');
+        res.send('Error\n');
    }
 })
 
@@ -95,20 +95,20 @@ app.post('/create/identification', async(req,res) => {
 //debe ser put
 app.post('/update/identification', async(req,res) => {
     const data = req.body;
-    const sql = `UPDATE JOSHUA.Identificacion SET Period = SYSDATE, Comment = :1 WHERE id_identification = :2`;
+    const sql = `UPDATE JOSHUA.Identificacion SET Period = SYSDATE, Commentary = :1 WHERE id_identification = :2`;
     try{
         /* Debo recibir:
-            Comment (comentario nuevo)
+            Commentary (comentario nuevo)
             id_identification
          */
         const connection = await oracledb.getConnection(dbConfig);
-        await connection.execute(sql,[data.Comment, data.id_identification]);
+        await connection.execute(sql,[data.Commentary, data.id_identification]);
         await connection.commit();
         await connection.close();
-        res.send('ok!')
+        res.send('ok!\n')
         console.log('ok!');
     } catch(err){
-        res.send('Error')
+        res.send('Error\n')
         console.log(err);
     }
 })
@@ -117,7 +117,7 @@ app.post('/update/identification', async(req,res) => {
 app.post('/delete/identification', async (req, res) => {
     const id = req.body.id_identification;
     const sql = `DELETE FROM JOSHUA.Identificacion WHERE id_identification = :1`;
-    try { //se asume que la fila ya esta creada por lo que no se verifica si existe
+    try { 
         const connection = await oracledb.getConnection(dbConfig);
         await connection.execute(sql, [id]);
         await connection.commit();
@@ -130,7 +130,7 @@ app.post('/delete/identification', async (req, res) => {
 
 
 app.post('/get/identifications', async (req, res) => {
-    const sql = `SELECT* FROM JOSHUA.Identification WHERE id_user = :1`; //hay que cambiar lo que devuelve
+    const sql = `SELECT* FROM JOSHUA.Identificacion WHERE id_user = :1`; //hay que cambiar lo que devuelve
     const id = req.body.id_user;
     try {
         const connection = await oracledb.getConnection(dbConfig);
@@ -138,8 +138,9 @@ app.post('/get/identifications', async (req, res) => {
         //aqui se puede verificar si la consulta no obtuvo nada
         res.json(consult.rows);
         await connection.close();
-    } catch {
+    } catch(err){
         res.send('Error\n');
+        console.log(err);
     }
 })
 
@@ -150,7 +151,7 @@ app.post('/get/all/identifications', async (req, res) => {
     try {
         const connection = await oracledb.getConnection(dbConfig);
         const consult = await connection.execute(sql, [id]);
-        //aqui se puede verificar si la consulta no obtuvo nada
+        //AQUI SE PUEDE VERIFICAR SI NO SE OBTUVO NADA DE LA CONSULTA
         res.json(consult.rows);
         await connection.close();
     } catch {
@@ -221,16 +222,13 @@ app.post('/get/image/taxon', async (req,res) => {
         const c3 = await connection.execute(sql3,[data.id_image]);
         const enviar = {
             path: path,
-            Image: c3.rows[0][0],
+            Image: c3.rows[0][0].toString('base64'),
             Period: c3.rows[0][1],
             License: c3.rows[0][2]
         }
         res.json(enviar);
         await connection.close();
         console.log('ok!');
-        // console.log(enviar.License);
-        // console.log(enviar.Period);
-        // console.log(enviar.path);
     } catch(err){
         console.log(err);
         res.send('Error\n');
@@ -378,6 +376,25 @@ app.listen(PORT, () => {
 });
 
 //const sql3 = `SELECT SYS_CONNECT_BY_PATH(Name,'/') "Path" FROM JOSHUA.Taxonomia WHERE Name = :1 START WITH id_mitata = 0 CONNECT BY PRIOR id_taxon = id_mitata`;
+
+
 //curl -X POST http://localhost:9000/register
+
+
 //curl -X POST -H "Content-Type: application/json" -d '{"name": "Miguel", "last_name": "Ramirez", "direction": "Alajuela, R2", "mail": "Migueru.1085@gmail.com", "country": "Francia", "password": "1234567890987654321"}' http://localhost:9000/register
+
+//curl -X POST -H "Content-Type: application/json" -d '{"id_taxon": 14, "id_image": 1}' http://localhost:9000/get/image/taxon
+
 //curl -X POST -H "Content-Type: application/json" -d '{"mail": "joshua.jimenez@gmail.com", "password": "pedro_pica_piedra"}' http://localhost:9000/login
+
+
+//curl -X POST -H "Content-Type: application/json" -d '{"id_identification": 1}' http://localhost:9000/delete/identification
+
+
+//curl -X POST -H "Content-Type: application/json" -d '{"id_user": 3}' http://localhost:9000/get/identifications
+
+
+//curl -X POST -H "Content-Type: application/json" -d '{"id_user": 2, "Commentary": "neg diff", "id_observation": 2}' http://localhost:9000/create/identification
+
+
+//curl -X POST -H "Content-Type: application/json" -d '{"id_identification": 2, "Commentary": "God-Freddy"}' http://localhost:9000/update/identification
