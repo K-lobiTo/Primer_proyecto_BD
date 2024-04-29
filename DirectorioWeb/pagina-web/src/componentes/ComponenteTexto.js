@@ -14,7 +14,6 @@ function ComponenteTexto({ change, placHold }) {
         <textarea
             className='contenedor-texto'
             id='input-texto'
-            contentEditable
             name='texto'
             placeholder={placHold}
             onChange={handleChange}

@@ -8,6 +8,7 @@ import '../hojas-de-estilo/MenuObservacion.css';
 import BotonM from '../componentes/BotonM';
 import TextSpace from '../componentes/TextSpace';
 import MenuFotografo from '../componentes/MenuFotografo';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function MenuObservacion() {
 
@@ -16,49 +17,54 @@ function MenuObservacion() {
   const [file, setFile] = useState(null);
   const [latitud, setLatitud] = useState('');
   const [longitud, setLongitud] = useState('');
-  const [menuFoto, setMenuFoto] = useState(false);
   const [nombre, setNombre] = useState('');
   const [apellidos, setApellidos] = useState('');
   const [pais, setPais] = useState('');
   const [direccion, setDireccion] = useState('');
   const [correo, setCorreo] = useState('');
+  const [license, setLicense] = useState('')
+  const [taxonValue, setTaxonValue] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const usrMail = location.state?.usrMail;
+  const usrID = location.state?.usrID;
 
   const format = dateTime => {
     return (dateTime + ':00Z').slice(0, 20);
   };
 
-  const abrirMenuFotografo = () => {
-    setMenuFoto(true);
-    if (texto !== '' && fecha !== '' && file != null && latitud !== '' && longitud !== '') {
-      setMenuFoto(true);
-    }
-    else {
-      console.log('Algun dato se encuentra vacio');
-    }
-  }
 
   const handleSubmit = async (e) => {
 
     e.preventDefault();
 
-    if (texto !== '' && fecha !== '' && file != null && latitud !== '' && longitud !== '') {
+    if (texto !== '' && fecha !== '' && file != null && latitud !== '' &&
+      longitud !== '' && nombre !== '' && apellidos !== '' && pais !== '' &&
+      direccion !== '' && correo !== '' && license !== '') {
       try {
         const date = format(fecha);
         const data = new FormData();
-        data.append('text', texto);
-        data.append('date', date);
-        data.append('image', file);
+        data.append('Commentary', texto);
+        data.append('Period', date);
+        data.append('Image', file);
+        data.append('Latitud', latitud);
+        data.append('Longitud', longitud);
+        data.append('name', nombre);
+        data.append('last_name', apellidos);
+        data.append('pais', pais);
+        data.append('direction', direccion);
+        data.append('Mail', correo);
+        data.append('id_user', usrID);
+        data.append('dato_animal', taxonValue);
 
-        data.append('latitud', latitud);
-        data.append('longitud', longitud);
-
-        const response = await axios.post('http://localhost:9000/', data, {
+        const response = await axios.post('http://localhost:9000/create/observation', data, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
 
-        window.location.href = '/inicio'; //ojo con esto
+        // window.location.href = '/inicio'; //ojo con esto
+        navigate('/mispublicaciones', { state: { usrID: usrID, mail: usrMail } })
 
         console.log('Datos enviados correctamente!', response.data);
       } catch (error) {
@@ -73,29 +79,23 @@ function MenuObservacion() {
         /*method='post'*/ className='form-main'>
         <ImageInput change={setFile} selected={file} />
         <ComponenteFecha change={setFecha} />
+        <TextSpace placeHold={'Valor de taxonomía'} getInput={setTaxonValue} />
         <div className='latitud-longitud'>
           <TextSpace placeHold={'Latitud'} getInput={setLatitud} />
           <div></div>
           <TextSpace placeHold={'Longitud'} getInput={setLongitud} />
         </div>
-        {/* <Ubicacion setLatitud={setLatitud} setLongitud={setLongitud} /> */}
         <ComponenteTexto change={setTexto} placHold={'  Notas:'} />
-        <BotonM texto={menuFoto ? 'Enviar' : 'Continuar'} handleClick={menuFoto ? handleSubmit : abrirMenuFotografo} />
+        <MenuFotografo
+          getLicense={setLicense}
+          getNombre={setNombre}
+          getApellidos={setApellidos}
+          getPais={setPais}
+          getDireccion={setDireccion}
+          getCorreo={setCorreo}
+        />
+        <BotonM texto={'Enviar'} handleClick={handleSubmit} />
       </form>
-      {menuFoto ?
-        <div className='menu-foto'>
-          <MenuFotografo
-            getNombre={setNombre}
-            getApellidos={setApellidos}
-            getPais={setPais}
-            getDireccion={setDireccion}
-            getCorreo={setCorreo}
-          />
-
-
-        </div>
-        :
-        ''}
     </div>
   );
 }

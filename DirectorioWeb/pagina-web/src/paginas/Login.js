@@ -31,10 +31,17 @@ function Login() {
                 });
 
                 // window.location.href = '/inicio';
-                navigate('/inicio', { state: { usrMail: mail.trim() } })
+                if (response.data == 'Error1') {
+                    alert('El usuario ingresado no existe');
+                }
+                else if (response.data == 'Error2') {
+                    alert('XD gg');
+                }
+                else {
+                    navigate('/inicio', { state: { usrMail: mail.trim() } })
+                    console.log('Datos enviados correctamente!', response.data);
+                }
 
-
-                console.log('Datos enviados correctamente!', response.data);
             } catch {
                 console.log('Error al enviar datos');
             }

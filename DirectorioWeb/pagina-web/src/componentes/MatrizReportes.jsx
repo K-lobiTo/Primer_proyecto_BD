@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ReporteFormulario from './ReporteFormulario';
 import Reporte from './Reporte';
 import '../hojas-de-estilo/MatrizReportes.css';
+import axios from 'axios';
 
 function MatrizReportes({ esUsuario }) {
     // esUsuario
@@ -70,7 +71,18 @@ function MatrizReportes({ esUsuario }) {
 
     }
 
-    const eliminarReporte = id => {
+    const eliminarReporte = async (id) => {
+
+        const data = {
+            id_observation: id
+        }
+
+        const response = await axios.post('http://localhost:9000/delete/observation', data, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        console.log('La mica sirvio');
         const reportesActualizados = reportes.filter(reporte => reporte.id !== id);
         setReportes(reportesActualizados);
     }

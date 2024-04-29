@@ -10,7 +10,6 @@ import Publicacion from './paginas/Publicacion';
 
 
 function App() {
-  console.log('abre Appjs');
 
   return (
 
@@ -19,7 +18,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/menuobservacion" element={<MenuObservacion />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path='/inicio' element={<Inicio />} />
           <Route path='/mispublicaciones' element={<MisPublicaciones />} />
