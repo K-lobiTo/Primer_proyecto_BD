@@ -27,6 +27,9 @@ function ReporteFormulario({ mostrarTodosUsuario, mostrarTodos, mostrarCoinciden
         // Aqui se pondria que mande a la base de datos a buscar algo similar a los escrito actualmente
     }, [input]);
 
+
+
+
     // const agregarReportes = (reporteAgregado) => {
     //     // lo que dice el nombre, se crean como 
     //     const reporteNuevo = {

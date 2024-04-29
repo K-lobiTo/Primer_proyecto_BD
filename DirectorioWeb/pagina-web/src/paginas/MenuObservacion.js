@@ -56,6 +56,7 @@ function MenuObservacion() {
         data.append('Mail', correo);
         data.append('id_user', usrID);
         data.append('dato_animal', taxonValue);
+        data.append('license_name', license);
 
         const response = await axios.post('http://localhost:9000/create/observation', data, {
           headers: {

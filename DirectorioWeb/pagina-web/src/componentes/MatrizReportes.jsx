@@ -9,7 +9,6 @@ function MatrizReportes({ esUsuario, usrID, mail }) {
     const navigate = useNavigate();
     // esUsuario
     const [reportes, setReportes] = useState([]);
-    const [ind, setInd] = useState(0);
 
     // este va a morir
     const agregarReporte = reporte => {
@@ -34,16 +33,40 @@ function MatrizReportes({ esUsuario, usrID, mail }) {
             }
         });
 
-        const ejemplo = ['Facebook', 'Instagram', 'YouTube'];
-
         setReportes(prevReportes => {
-            return ejemplo.map((texto, i) => ({
-                id: prevReportes.length + i,
-                texto: texto
+            return response.data.map((observation) => ({
+                id: observation.id_observation,
+                id_user: observation.id_user,
+                id_taxon: observation.id_taxon,
+                id_image: observation.id_image,
+                Commentary: observation.Commentary,
+                Period: observation.Period,
+                Latitud: observation.Latitud,
+                Longitud: observation.Longitud
             }));
         });
+        console.log('MostrarTodosUsuario()');
+
+
+        // const ejemplo = ['Facebook', 'Instagram', 'YouTube'];
+        // setReportes(prevReportes => {
+        //     return ejemplo.map((texto, i) => ({
+        //         id: prevReportes.length + i,
+        //         texto: texto
+        //     }));
+        // });
 
     }
+
+    const cargarReportes = () => {
+        esUsuario ?
+            mostrarTodosUsuario() : mostrarTodos();
+    }
+
+
+    useEffect(() => {
+        // cargarReportes();
+    }, []);
 
 
     // for (let i = 0; i < ejemplo.length; i++) {
@@ -70,23 +93,23 @@ function MatrizReportes({ esUsuario, usrID, mail }) {
     // });
 
     const mostrarTodos = async () => {
-        const data = {
-            id_user: usrID
-        };
         //AQUI VA LA QUE ES MOSTRAR TODAS
 
-        const response = await axios.post('http://localhost:9000/get/????', data, {
+        const response = await axios.post('http://localhost:9000/get/all/observations', {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
-
-        const ejemplo = ['Facebook', 'Instagram', 'YouTube'];
-
         setReportes(prevReportes => {
-            return ejemplo.map((texto, i) => ({
-                id: prevReportes.length + i,
-                texto: texto
+            return response.data.map((observation) => ({
+                id: observation.id_observation,
+                id_user: observation.id_user,
+                id_taxon: observation.id_taxon,
+                id_image: observation.id_image,
+                Commentary: observation.Commentary,
+                Period: observation.Period,
+                Latitud: observation.Latitud,
+                Longitud: observation.Longitud
             }));
         });
 
@@ -127,7 +150,7 @@ function MatrizReportes({ esUsuario, usrID, mail }) {
     const verReporte = id => {
         const reportesActualizados = reportes.map(reporte => {
             if (reporte.id === id) {
-                navigate('/publicacion', { state: { usrID: usrID, repID: id, usrMail: mail, fromWhere: esUsuario } })
+                navigate('/publicacion', { state: { usrID: usrID, repID: id, usrMail: mail, fromWhere: esUsuario, observacion: reporte } })
                 // Aqui toca mostrar el reporte en la ventana nueva que aun no existe
             }
             return reporte;

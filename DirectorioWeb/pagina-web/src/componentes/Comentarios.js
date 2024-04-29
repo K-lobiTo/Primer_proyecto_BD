@@ -4,9 +4,11 @@ import TextoPerso from './TextoPerso';
 import { useState } from 'react';
 import BotonM from './BotonM';
 import axios from 'axios';
+import TextSpace from './TextSpace';
 
 function Comentarios({ observacionID }) {
     const [comentarios, setComentarios] = useState([]);
+    const [nuevoComentario, setNuevoComentario] = useState('');
 
     const agregarComentario = comment => {
         if (comment.texto.trim()) {
@@ -39,14 +41,21 @@ function Comentarios({ observacionID }) {
 
     return (
         <form className='form-comentarios'>
-            <div className='ancho'>
-                <h1>Comentarios</h1>
-            </div>
-            <div className='ancho'>
-                <BotonM
-                    texto={'  añadir comentario  '}
-                    handleClick={agregarComentario}
-                />
+            <h1>Comentarios</h1>
+            <div className='comentario-nuevo'>
+                <div className='texto-comentario'>
+                    <TextSpace
+                        placeHold={'    Escribe aquí tu comentario'}
+                        tipo={'text'}
+                        getInput={setNuevoComentario}
+                    />
+                </div>
+                <div className='boton-comentario'>
+                    <BotonM
+                        texto={'  añadir comentario  '}
+                        handleClick={agregarComentario}
+                    />
+                </div>
             </div>
             <div className='comentarios' >
                 {
