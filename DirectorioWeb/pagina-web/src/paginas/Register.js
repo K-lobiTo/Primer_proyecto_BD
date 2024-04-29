@@ -10,15 +10,15 @@ function Register() {
     const [apellidos, setApellidos] = useState('');
     const [pais, setPais] = useState('');
     const [direccion, setDireccion] = useState('');
-    const [userName, setName] = useState('');
+    //const [userName, setName] = useState('');
     const [correo, setCorreo] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
-        navigate('/login');
+        //navigate('/login'); //esto creo que deber'ia ir luego de hacer la consulta completa
         e.preventDefault();
-        if (nombre !== '' && apellidos !== '' && pais !== '' && direccion !== '' && userName !== '' && correo !== '' && password !== '') {
+        if (nombre !== '' && apellidos !== '' && pais !== '' && direccion !== '' && correo !== '' && password !== '') {
             try {
 
                 const response = await axios.post('http://localhost:9000/register', {
@@ -26,7 +26,7 @@ function Register() {
                     last_name: apellidos,
                     country: pais,
                     direction: direccion,
-                    user: userName,
+                    //user: userName,
                     mail: correo,
                     password: password
                 }, {
@@ -35,14 +35,12 @@ function Register() {
                     }
                 });
 
-                console.log('cae en el try');
 
                 console.log('Datos enviados correctamente!\n', response.data);
                 // AQUI DEBE IR EL CAMBIO DE PAGINA A LA PAGINA Login.js 
                 navigate('/login');
 
             } catch (error) {
-                console.log('cae en el catch');
                 console.error('Error al enviar datos: ', error);
             }
         } else console.log('Algun dato se encuentra vacio\n');
@@ -56,7 +54,7 @@ function Register() {
                 <TextSpace placeHold={'Apellidos'} tipo={'text'} getInput={setApellidos} />
                 <TextSpace placeHold={'País'} tipo={'text'} getInput={setPais} />
                 <TextSpace placeHold={'Dirección'} tipo={'text'} getInput={setDireccion} />
-                <TextSpace placeHold={'Nombre de usuario'} tipo={'text'} getInput={setName} />
+
                 <TextSpace placeHold={'Correo Electrónico'} tipo={'text'} getInput={setCorreo} />
                 <TextSpace placeHold={'Cree una contraseña'} tipo={'password'} getInput={setPassword} />
                 <BotonM

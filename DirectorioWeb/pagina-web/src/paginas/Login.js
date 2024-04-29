@@ -17,9 +17,9 @@ function Login() {
         e.preventDefault();
         if (mail !== '' && password !== '') {
             try {
-                console.log(mail);
-                console.log(password);
-                navigate('/inicio', { state: { usrMail: mail.trim() } })
+                //console.log(mail);
+                //console.log(password);
+                //navigate('/inicio', { state: { usrMail: mail.trim() } }) //creo que esto debe ir al final
                 const data = {
                     mail: mail,
                     password: password
@@ -31,7 +31,7 @@ function Login() {
                 });
 
                 // window.location.href = '/inicio';
-                // navigate('/inicio', { state: { usrMail: mail.trim() } })
+                navigate('/inicio', { state: { usrMail: mail.trim() } })
 
 
                 console.log('Datos enviados correctamente!', response.data);
