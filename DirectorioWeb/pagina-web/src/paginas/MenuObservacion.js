@@ -46,7 +46,7 @@ function MenuObservacion() {
         const data = new FormData();
         data.append('Commentary', texto);
         data.append('Period', date);
-        data.append('Image', file);
+        data.append('image', file);
         data.append('Latitud', latitud);
         data.append('Longitud', longitud);
         data.append('name', nombre);

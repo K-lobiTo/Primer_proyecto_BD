@@ -261,11 +261,10 @@ app.post('/get/image/taxon', async (req, res) => {
 
 app.post('/create/observation', upload.single('image'), async (req, res) => {
     const sql1 = `SELECT id_taxon FROM JOSHUA.Taxonomia WHERE Name = :1`;
-    const sql2 = `INSERT INTO JOSHUA.Observacion(id_user,id_taxon,id_image,Commentary,Latitud,Longitud) VALUES(:1,:2,:3,:4,:5,:6)`;
-    const sql3 = `SELECT id_license FROM JOSHUA.Licencia WHERE Name = :1`;
+    const sql2 = `INSERT INTO JOSHUA.Observacion(id_user,id_taxon,id_image,Commentary,Period,Latitud,Longitud) VALUES(:1,:2,:3,:4,SYSDATE,:5,:6)`;
+    const sql3 = `SELECT id_license FROM JOSHUA.Licencia WHERE License = :1`;
     const sql4 = `SELECT id_persona FROM JOSHUA.Persona WHERE Mail = :1`;
-    const sql5 = `INSERT INTO JOSHUA.Imagen(Image,Period,id_persona,id_license) VALUES(:1,TO_TIMESTAMP_TZ(:2,\'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"\'),:3,:4)`;
-    const sql6 = `SELECT id_image FROM JOSHUA.Imagen WHERE DBMS_LOB.COMPARE(Image,:1) = 0`;
+    const sql5 = `INSERT INTO JOSHUA.Imagen(Image,Period,id_persona,id_license) VALUES(:1,TO_TIMESTAMP_TZ(:2,\'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"\'),:3,:4) RETURNING id_image INTO :5`;
     const sql7 = `INSERT INTO JOSHUA.Persona(Name, Last_name, Direction, Mail, id_country) VALUES(:1,:2,:3,:4,:5)`;
     const sql8 = `SELECT id_country FROM JOSHUA.Pais WHERE Name = :1`;
 
@@ -278,28 +277,21 @@ app.post('/create/observation', upload.single('image'), async (req, res) => {
         var consult1 = await connection.execute(sql4, [data.Mail]);
 
         if (consult1.rows.length == 0) {
-            const c = await connection.execute(sql8, [data.pais]);
+            const country = data.pais.toUpperCase();
+            const c = await connection.execute(sql8, [country]);
             const id_country = c.rows[0][0];
-            connection.execute(sql7, [data.name, data.last_name, data.direction, data.Mail, id_country]);
+            await connection.execute(sql7, [data.name, data.last_name, data.direction, data.Mail, id_country]);
             consult1 = await connection.execute(sql4, [data.Mail]);
         }
 
         const consult2 = await connection.execute(sql3, [data.license_name]);
-
         const id_persona = consult1.rows[0][0];
         const id_license = consult2.rows[0][0];
-
-        //verificar si la imagen ya esta insertada
-        var consult4 = await connection.execute(sql6, [Buffer.from(imagebuffer, 'binary')]);
-
-        if (consult4.rows.length == 0) {
-            await connection.execute(sql5, [data.Image, data.Period, id_persona, id_license]);
-            consult4 = await connection.execute(sql6, [Buffer.from(imagebuffer, 'binary')]);
-        }
-
-        const consult3 = await connection.execute(sql1, [data.dato_animal]);
+        const result = await connection.execute(sql5,[Buffer.from(imagebuffer, 'binary'), data.Period, id_persona, id_license, { type: oracledb.NUMBER, dir: oracledb.BIND_OUT }]);
+        const consult3 = await connection.execute(sql1, [data.dato_animal.toUpperCase()]); //hice un cambio aqui
         const id_taxon = consult3.rows[0][0];
-        const id_image = consult4.rows[0][0];
+        const id_image = result.outBinds[0][0];
+
 
         await connection.execute(sql2, [data.id_user, id_taxon, id_image, data.Commentary, data.Latitud, data.Longitud]);
         await connection.commit();
