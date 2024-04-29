@@ -6,16 +6,21 @@ import MatrizReportes from '../componentes/MatrizReportes';
 import TextoPerso from '../componentes/TextoPerso';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-function Inicio(props) {  // usuarioID
+function Inicio() {  // usuarioID
     const navigate = useNavigate();
     const location = useLocation();
     const usrMail = location.state?.usrMail;
+    const usrID = location.state?.usrID;
 
     const abrirMisPublicaciones = () => {
         console.log(usrMail);
-        navigate('/mispublicaciones', { state: { usrID: 1, mail: usrMail } })
+        navigate('/mispublicaciones', { state: { usrID: usrID, mail: usrMail } })
 
         //          Abrir mis publicaciones, con la informacion de usuario
+    }
+
+    const volverAqui = () => {
+        navigate('/inicio', { state: { usrMail: usrMail, usrID: usrID } })
     }
 
     return (
@@ -42,7 +47,10 @@ function Inicio(props) {  // usuarioID
             <div className='contenedor-buscar-reportes'>
                 <h1>Buscar publicaciones</h1>
                 <MatrizReportes
+
                     esUsuario={false}
+                    usrID={usrID}
+                    mail={usrMail}
                 />
             </div>
         </div >

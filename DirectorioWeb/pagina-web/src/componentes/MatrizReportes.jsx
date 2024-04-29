@@ -3,8 +3,10 @@ import ReporteFormulario from './ReporteFormulario';
 import Reporte from './Reporte';
 import '../hojas-de-estilo/MatrizReportes.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-function MatrizReportes({ esUsuario }) {
+function MatrizReportes({ esUsuario, usrID, mail }) {
+    const navigate = useNavigate();
     // esUsuario
     const [reportes, setReportes] = useState([]);
     const [ind, setInd] = useState(0);
@@ -21,7 +23,17 @@ function MatrizReportes({ esUsuario }) {
     }
 
     //aqui debe tomar todos los valores de las observaciones del Usuario
-    const mostrarTodosUsuario = () => {
+    const mostrarTodosUsuario = async () => {
+        const data = {
+            id_user: usrID
+        };
+
+        const response = await axios.post('http://localhost:9000/get/observations', data, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
         const ejemplo = ['Facebook', 'Instagram', 'YouTube'];
 
         setReportes(prevReportes => {
@@ -32,6 +44,7 @@ function MatrizReportes({ esUsuario }) {
         });
 
     }
+
 
     // for (let i = 0; i < ejemplo.length; i++) {
     //     const reporteNuevo = {
@@ -56,20 +69,39 @@ function MatrizReportes({ esUsuario }) {
     //     console.log(ind);
     // });
 
-    const mostrarTodos = () => {
+    const mostrarTodos = async () => {
+        const data = {
+            id_user: usrID
+        };
+        //AQUI VA LA QUE ES MOSTRAR TODAS
+
+        const response = await axios.post('http://localhost:9000/get/????', data, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const ejemplo = ['Facebook', 'Instagram', 'YouTube'];
+
+        setReportes(prevReportes => {
+            return ejemplo.map((texto, i) => ({
+                id: prevReportes.length + i,
+                texto: texto
+            }));
+        });
+
         console.log('mostrarTodos()');
 
     }
 
-    const mostrarCoincidenciasUsuario = (textInput) => {
-        console.log('mostrarCoincidenciasUsuario()');
+    // const mostrarCoincidenciasUsuario = (textInput) => {
+    //     console.log('mostrarCoincidenciasUsuario()');
 
-    }
+    // }
 
-    const mostrarCoincidencias = (textInput) => {
-        console.log('mostrarCoincidencias() ');
-
-    }
+    // const mostrarCoincidencias = (textInput) => {
+    //     console.log('mostrarCoincidencias() ');
+    // }
 
     const eliminarReporte = async (id) => {
 
@@ -88,13 +120,14 @@ function MatrizReportes({ esUsuario }) {
     }
 
 
-    const eliminarTodos = () => {
-        setReportes([]);
-    }
+    // const eliminarTodos = () => {
+    //     setReportes([]);
+    // }
 
     const verReporte = id => {
         const reportesActualizados = reportes.map(reporte => {
             if (reporte.id === id) {
+                navigate('/publicacion', { state: { usrID: usrID, repID: id, usrMail: mail, fromWhere: esUsuario } })
                 // Aqui toca mostrar el reporte en la ventana nueva que aun no existe
             }
             return reporte;
@@ -106,15 +139,13 @@ function MatrizReportes({ esUsuario }) {
 
     return (
         <>
-            <ReporteFormulario
-                // agregarReporte={agregarReporte}
-                // eliminarTodos={eliminarTodos}
-                mostrarTodosUsuario={mostrarTodosUsuario}
-                mostrarTodos={mostrarTodos}
-                mostrarCoincidencias={mostrarCoincidencias}
-                mostrarCoincidenciasUsuario={mostrarCoincidenciasUsuario}
-                esUsr={esUsuario}
-            />
+            {/* <ReporteFormulario
+            mostrarTodosUsuario={mostrarTodosUsuario}
+            mostrarTodos={mostrarTodos}
+            // mostrarCoincidencias={mostrarCoincidencias}
+            // mostrarCoincidenciasUsuario={mostrarCoincidenciasUsuario}
+            esUsr={esUsuario}
+        /> */}
             <div className='reportes-matriz-contenedor'>
                 {
                     reportes.map((reporte) =>

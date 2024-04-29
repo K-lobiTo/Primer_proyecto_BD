@@ -1,18 +1,26 @@
 .form-comentarios {
     display: flex;
     align-items: center;
-
-    width: 100%;
-    min-height: 100px;
-    background-color: aquamarine;
-}
-
-.comentarios {
-    display: flex;
-    align-items: center;
     justify-content: center;
 
     width: 100%;
     min-height: 100px;
     background-color: aquamarine;
+    text-align: center;
+}
+
+.ancho {
+    width: 100%;
+    background-color: red;
+    margin: 10px;
+}
+
+.comentarios {
+    /* display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 100px;
+    background-color: aquamarine; */
 }

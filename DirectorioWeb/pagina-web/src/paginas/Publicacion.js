@@ -2,17 +2,24 @@
 import React from 'react';
 import '../hojas-de-estilo/PaginaPublicacion.css';
 import BotonM from '../componentes/BotonM';
-import MatrizReportes from '../componentes/MatrizReportes';
 import TextoPerso from '../componentes/TextoPerso';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Comentarios from '../componentes/Comentarios';
+
 
 function Publicacion() {
+    // navigate('/publicacion', { state: { usrID: usrID, repID: id } })
+    const navigate = useNavigate();
+    const location = useLocation();
+    const repID = location.state?.repID;
+    const usrID = location.state?.usrID;
+    const usrMail = location.state?.mail;
+    const esUsuario = location.state?.fromWhere
+
     const volverAnterior = () => {
-
+        navigate(esUsuario ? '/mispublicaciones' : '/inicio', { state: { usrID: usrID, mail: usrMail } });
     }
 
-    const nada = () => {
-
-    }
 
     return (
         <div className='form-publicacion'>
@@ -25,10 +32,6 @@ function Publicacion() {
                 </div>
                 <div className='informacion-usuario'>
                     {/* Aqui va el perfil de usuario */}
-                    <BotonM
-                        texto={'  pinga  '}
-                        handleClick={nada}
-                    />
                 </div>
             </div>
             <h1>Observación</h1>
@@ -55,6 +58,10 @@ function Publicacion() {
             <TextoPerso
                 placeHold={'Ave maria'}
                 texto={'ODIO GENSHIN IMPACT'}
+            />
+
+            <Comentarios
+                observacionID={repID}
             />
 
         </div >

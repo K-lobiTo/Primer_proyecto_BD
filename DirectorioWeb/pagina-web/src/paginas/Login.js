@@ -31,14 +31,16 @@ function Login() {
                 });
 
                 // window.location.href = '/inicio';
+
                 if (response.data == 'Error1') {
-                    alert('El usuario ingresado no existe');
+                    alert('Contraseña incorrecta o usuario inexistente');
                 }
                 else if (response.data == 'Error2') {
                     alert('XD gg');
                 }
                 else {
-                    navigate('/inicio', { state: { usrMail: mail.trim() } })
+                    const usrID = response.data[0][0];
+                    navigate('/inicio', { state: { usrMail: mail.trim(), usrID: usrID } })
                     console.log('Datos enviados correctamente!', response.data);
                 }
 

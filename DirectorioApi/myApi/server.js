@@ -82,11 +82,11 @@ app.post('/create/identification', async (req, res) => {
         await connection.execute(sql, [data.id_observation, data.id_user, data.Commentary]);
         await connection.commit();
         await connection.close();
-        res.send('ok!\n');
+        res.send('ok!');
         console.log('ok!');
     } catch (err) {
         console.log(err);
-        res.send('Error\n');
+        res.send('Error');
     }
 })
 
@@ -104,10 +104,10 @@ app.post('/update/identification', async (req, res) => {
         await connection.execute(sql, [data.Commentary, data.id_identification]);
         await connection.commit();
         await connection.close();
-        res.send('ok!\n')
+        res.send('ok!')
         console.log('ok!');
     } catch (err) {
-        res.send('Error\n')
+        res.send('Error')
         console.log(err);
     }
 })
@@ -123,14 +123,14 @@ app.post('/delete/identification', async (req, res) => {
         await connection.close();
         console.log('GG');
     } catch {
-        res.send('Error\n');
+        res.send('Error');
     }
 })
 
 
 app.post('/get/identifications', async (req, res) => {
-    const sql = `SELECT* FROM JOSHUA.Identificacion WHERE id_user = :1`; //hay que cambiar lo que devuelve
-    const id = req.body.id_user;
+    const sql = `SELECT Name,Last_name,Mail,JOSHUA.Identificacion.id_user,Commentary,Period,id_identification FROM JOSHUA.Identificacion JOIN JOSHUA.Usuario ON JOSHUA.Identificacion.id_user = JOSHUA.Usuario.id_user JOIN JOSHUA.Persona ON JOSHUA.Usuario.id_persona = JOSHUA.Persona.id_persona WHERE JOSHUA.Identificacion.id_observation = :1`;
+    const id = req.body.id_observation;
     try {
         const connection = await oracledb.getConnection(dbConfig);
         const consult = await connection.execute(sql, [id]);
@@ -138,7 +138,7 @@ app.post('/get/identifications', async (req, res) => {
         res.json(consult.rows);
         await connection.close();
     } catch (err) {
-        res.send('Error\n');
+        res.send('Error');
         console.log(err);
     }
 })
@@ -154,7 +154,7 @@ app.post('/get/all/identifications', async (req, res) => {
         res.json(consult.rows);
         await connection.close();
     } catch {
-        res.send('Error\n');
+        res.send('Error');
     }
 })
 
@@ -171,7 +171,7 @@ app.post('/delete/observation', async (req, res) => { //VERIFICAR EL ORDEN EN EL
         await connection.close();
         console.log('GG');
     } catch {
-        res.send('Error\n');
+        res.send('Error');
     }
 })
 
@@ -186,7 +186,7 @@ app.post('/get/observations', async (req, res) => {
         res.json(consult.rows);
         await connection.close();
     } catch {
-        res.send('Error\n');
+        res.send('Error');
     }
 })
 
@@ -201,7 +201,7 @@ app.post('/get/all/observations', async (req, res) => {
         res.json(consult.rows);
         await connection.close();
     } catch {
-        res.send('Error\n');
+        res.send('Error');
     }
 })
 
@@ -230,7 +230,7 @@ app.post('/get/image/taxon', async (req, res) => {
         console.log('ok!');
     } catch (err) {
         console.log(err);
-        res.send('Error\n');
+        res.send('Error');
     }
 })
 
@@ -320,12 +320,12 @@ app.post('/register', async (req, res) => {
         var consult2 = await connection.execute(sacar_persona, [data.mail]);
 
         if (consult1.rows.length == 0) {
-            res.send('Error1\n');
+            res.send('Error1');
         } else if (consult2.rows.length != 0) {
             const p = consult2.rows[0][0];
             const test = await connection.execute(verificar, [p]);
             if (test.rows.length != 0) {
-                res.send('Error2\n');
+                res.send('Error2');
             } else {
                 await connection.execute(insertar_usuario, [p, hash_pass]);
             }
@@ -340,7 +340,7 @@ app.post('/register', async (req, res) => {
         //res.send('ok!\n');
         console.log('GG');
     } catch (err) {
-        res.send('Error3\n');
+        res.send('Error3');
         console.log(err);
     }
 })
@@ -357,7 +357,7 @@ app.post('/login', async (req, res) => {
         if (consult.rows.length != 0) {
             res.json(consult.rows);
         } else {
-            res.send('Error1\n'); //igualmente hay que enviar algo para verificar en la interfaz
+            res.send('Error1'); //igualmente hay que enviar algo para verificar en la interfaz
         }
         await connection.close();
         console.log('ok!');
@@ -365,7 +365,7 @@ app.post('/login', async (req, res) => {
     } catch (err) {
         //await connection.close();
         console.log(err);
-        res.send('Error2\n');
+        res.send('Error2');
     }
 })
 

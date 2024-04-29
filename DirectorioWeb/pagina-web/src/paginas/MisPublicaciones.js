@@ -14,12 +14,12 @@ function MisPublicaciones() {
 
 
     const volverInicio = () => {
-        navigate('/inicio', { state: { usrMail: usrMail } })
+        navigate('/inicio', { state: { usrMail: usrMail, usrID: usrID } })
         //logica de volver al inicio, conservando el usuario
     }
 
     const crearPublicacion = () => {
-        navigate('/menuobservacion', { state: { usrID: usrID } })
+        navigate('/menuobservacion', { state: { usrID: usrID, usrMail: usrMail } })
         // la idea es que despues de esto se devuelva aqui mismo, en esta pagina
     }
 
@@ -48,6 +48,8 @@ function MisPublicaciones() {
                 <h1>Mis publicaciones</h1>
                 <MatrizReportes
                     esUsuario={true}
+                    usrID={usrID}
+                    mail={usrMail}
                 />
             </div>
         </div >
