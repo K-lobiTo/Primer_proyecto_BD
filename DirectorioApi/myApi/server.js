@@ -44,30 +44,6 @@ const upload = multer({
     storage: storage
 })
 
-app.post('/', upload.single('image'), async (req, res) => { //.any() para aceptar mas imagenes
-
-    const data = req.body;
-    const image = req.file;
-    const imagebuffer = fs.readFileSync(image.path);
-
-    var sql = `INSERT INTO JOSHUA.TEST5 (TEXTO,FECHA,IMAGEN) VALUES (:1, TO_TIMESTAMP_TZ(:2,\'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"\'), :3)`;
-
-    try {
-        const connection = await oracledb.getConnection(dbConfig);
-        await connection.execute(
-            sql,
-            [data.text, data.date, Buffer.from(imagebuffer, 'binary')]);
-
-        await connection.commit();
-        fs.unlinkSync(image.path);
-        await connection.close();
-        res.send('Datos insertados correctamente a la base de datos.');
-    } catch (error) {
-        console.log('Error al recibir datos: ', error);
-        res.status(500).send('Error al enviar datos a la base');
-    }
-})
-
 
 app.post('/create/identification', async (req, res) => {
     const sql = `INSERT INTO JOSHUA.Identificacion(Period,id_observation,id_user,Commentary) VALUES(SYSDATE,:1,:2,:3)`;
@@ -75,7 +51,7 @@ app.post('/create/identification', async (req, res) => {
     /* Debo recibir:
         id_observation
         id_user
-        Comment
+        Commentary
     */
     try {
         const connection = await oracledb.getConnection(dbConfig);
@@ -137,6 +113,7 @@ app.post('/get/identifications', async (req, res) => {
         //aqui se puede verificar si la consulta no obtuvo nada
         res.json(consult.rows);
         await connection.close();
+        console.log('ok! get identification');
     } catch (err) {
         res.send('Error');
         console.log(err);
@@ -170,6 +147,7 @@ app.post('/delete/observation', async (req, res) => { //VERIFICAR EL ORDEN EN EL
         await connection.commit();
         await connection.close();
         console.log('GG');
+        res.send('ok!');
     } catch {
         res.send('Error');
     }

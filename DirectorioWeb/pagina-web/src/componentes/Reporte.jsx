@@ -4,7 +4,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import BotonM from './BotonM';
 import TextoPerso from './TextoPerso';
 
-function Reporte({ id, texto, verReporte, eliminarReporte, esUsuario }) { //esUsuario
+function Reporte({ id, verReporte, eliminarReporte, esUsuario, Commentary, Period, Latitud, Longitud }) { //esUsuario
 
     return (
         <div className='reporte-contenedor'>
@@ -18,20 +18,20 @@ function Reporte({ id, texto, verReporte, eliminarReporte, esUsuario }) { //esUs
                 ''
             }
             <TextoPerso
-                placeHold={'Nombre: '}
-                texto={texto} />
+                placeHold={'Comentario: '}
+                texto={Commentary} />
             <TextoPerso
-                placeHold={'Fecha: '}
-                texto={texto} />
+                placeHold={'Periodo: '}
+                texto={Period} />
             <TextoPerso
-                placeHold={'Taxonomía: '}
-                texto={texto} />
+                placeHold={'Latitud: '}
+                texto={Latitud} />
             <TextoPerso
-                placeHold={'Especie: '}
-                texto={texto} />
+                placeHold={'Longitud: '}
+                texto={Longitud} />
             <BotonM
                 texto={'Ver publicación'}
-                handleClick={verReporte}
+                handleClick={() => verReporte(id)}
             />
         </div>
     );

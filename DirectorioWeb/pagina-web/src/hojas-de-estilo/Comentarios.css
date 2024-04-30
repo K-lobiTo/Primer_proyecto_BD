@@ -42,3 +42,17 @@
     min-height: 100px;
     background-color: aquamarine;
 }
+
+.comentario-contenedor-iconos {
+    background-color: blue;
+    margin-bottom: 35px;
+}
+
+.comentario-icono {
+    /* background-color: aqua; */
+    float: right;
+    /* background-color: aqua; */
+    width: 25px;
+    height: 25px;
+    margin: 5px;
+}

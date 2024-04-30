@@ -32,17 +32,19 @@ function MatrizReportes({ esUsuario, usrID, mail }) {
                 'Content-Type': 'application/json'
             }
         });
+        console.log(response.data);
+        console.log(response.data.Commentary);
 
         setReportes(prevReportes => {
             return response.data.map((observation) => ({
-                id: observation.id_observation,
-                id_user: observation.id_user,
-                id_taxon: observation.id_taxon,
-                id_image: observation.id_image,
-                Commentary: observation.Commentary,
-                Period: observation.Period,
-                Latitud: observation.Latitud,
-                Longitud: observation.Longitud
+                id: observation[0],
+                id_user: observation[1],
+                id_taxon: observation[2],
+                id_image: observation[3],
+                Commentary: observation[4],
+                Period: observation[5],
+                Latitud: observation[6],
+                Longitud: observation[7]
             }));
         });
         console.log('MostrarTodosUsuario()');
@@ -65,32 +67,9 @@ function MatrizReportes({ esUsuario, usrID, mail }) {
 
 
     useEffect(() => {
-        // cargarReportes();
+        console.log('Me cago en chatGPT');
+        cargarReportes();
     }, []);
-
-
-    // for (let i = 0; i < ejemplo.length; i++) {
-    //     const reporteNuevo = {
-    //         id: i,
-    //         texto: ejemplo[i]
-    //     }
-    //     agregarReporte(reporteNuevo);
-    //     console.log(ejemplo[i], ' indice ', i);
-    //     //En este caso agregarReporte deberia encargarse de no meter
-    //     //reportes repetidos, mediante el id
-    // }
-    // ejemplo.map(tex => {
-    //     const reporteNuevo = {
-    //         id: ind,
-    //         texto: tex
-    //     }
-    //     agregarReporte(reporteNuevo);
-    //     console.log(tex);
-    //     //En este caso agregarReporte deberia encargarse de no meter
-    //     //reportes repetidos, mediante el id
-    //     setInd(ind + 1);
-    //     console.log(ind);
-    // });
 
     const mostrarTodos = async () => {
         //AQUI VA LA QUE ES MOSTRAR TODAS
@@ -102,14 +81,14 @@ function MatrizReportes({ esUsuario, usrID, mail }) {
         });
         setReportes(prevReportes => {
             return response.data.map((observation) => ({
-                id: observation.id_observation,
-                id_user: observation.id_user,
-                id_taxon: observation.id_taxon,
-                id_image: observation.id_image,
-                Commentary: observation.Commentary,
-                Period: observation.Period,
-                Latitud: observation.Latitud,
-                Longitud: observation.Longitud
+                id: observation[0],
+                id_user: observation[1],
+                id_taxon: observation[2],
+                id_image: observation[3],
+                Commentary: observation[4],
+                Period: observation[5],
+                Latitud: observation[6],
+                Longitud: observation[7]
             }));
         });
 
@@ -137,6 +116,8 @@ function MatrizReportes({ esUsuario, usrID, mail }) {
                 'Content-Type': 'application/json'
             }
         });
+
+        console.log(response.value);
         console.log('La mica sirvio');
         const reportesActualizados = reportes.filter(reporte => reporte.id !== id);
         setReportes(reportesActualizados);
@@ -148,14 +129,20 @@ function MatrizReportes({ esUsuario, usrID, mail }) {
     // }
 
     const verReporte = id => {
-        const reportesActualizados = reportes.map(reporte => {
-            if (reporte.id === id) {
-                navigate('/publicacion', { state: { usrID: usrID, repID: id, usrMail: mail, fromWhere: esUsuario, observacion: reporte } })
-                // Aqui toca mostrar el reporte en la ventana nueva que aun no existe
-            }
-            return reporte;
-        });
-        setReportes(reportesActualizados);
+        console.log(id);
+        console.log(usrID);
+        const reporteEncontrado = reportes.find(reporte => reporte.id === id);
+        if (reporteEncontrado) {
+            navigate('/publicacion', {
+                state: {
+                    usrID: usrID,
+                    repID: id,
+                    usrMail: mail,
+                    fromWhere: esUsuario,
+                    observacion: reporteEncontrado
+                }
+            });
+        }
     }
 
 
@@ -174,6 +161,10 @@ function MatrizReportes({ esUsuario, usrID, mail }) {
                     reportes.map((reporte) =>
                         <Reporte
                             key={reporte.id}
+                            Commentary={reporte.Commentary}
+                            Period={reporte.Period}
+                            Latitud={reporte.Latitud}
+                            Longitud={reporte.Longitud}
                             id={reporte.id}
                             texto={reporte.texto}
                             verReporte={verReporte}
