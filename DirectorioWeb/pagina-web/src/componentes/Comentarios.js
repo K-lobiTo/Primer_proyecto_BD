@@ -21,9 +21,6 @@ function Comentarios({ usrID, observacionID }) {
 
     const agregarComentario = async () => {
         if (nuevoComentario.trim()) {
-            usrID.preventDefault();
-            // observacionID.preventDefault();
-            nuevoComentario.preventDefault();
             const data = {
                 id_user: usrID,
                 id_observation: observacionID,
@@ -34,8 +31,8 @@ function Comentarios({ usrID, observacionID }) {
                     'Content-Type': 'application/json'
                 }
             });
-            console.log(response.data);
-            // await cargarComentarios();
+            console.log('impresion de el response de comentario agregado : ', response.data);
+            await cargarComentarios();
         }
 
     }
@@ -57,30 +54,47 @@ function Comentarios({ usrID, observacionID }) {
             }
         }
         );
-        console.log(response.data);
+        console.log('comentarios   cargados:  ', response.data);
 
-        // setComentarios(prevComentarios => {
-        //     // const sql = `SELECT Name,Last_name,Mail,JOSHUA.Identificacion.id_user,Commentary,Period,id_identification FROM JOSHUA.Identificacion JOIN JOSHUA.Usuario ON JOSHUA.Identificacion.id_user = JOSHUA.Usuario.id_user JOIN JOSHUA.Persona ON JOSHUA.Usuario.id_persona = JOSHUA.Persona.id_persona WHERE JOSHUA.Identificacion.id_observation = :1`;
-        //     return response.data.map((comment) => ({
-        //         Name: comment[0],
-        //         Last_name: comment[1],
-        //         id_user: comment[3],
-        //         texto: comment[4],
-        //         id_identification: comment[6]
+            // const sql = `SELECT Name,Last_name,Mail,JOSHUA.Identificacion.id_user,Commentary,Period,id_identification FROM JOSHUA.Identificacion JOIN JOSHUA.Usuario ON JOSHUA.Identificacion.id_user = JOSHUA.Usuario.id_user JOIN JOSHUA.Persona ON JOSHUA.Usuario.id_persona = JOSHUA.Persona.id_persona WHERE JOSHUA.Identificacion.id_observation = :1`;
+        setComentarios(prevComentarios => {
+            return response.data.map((comment) => ({
 
+                Name: comment[0],
+                Last_name: comment[1],
+                id_user: comment[3],
+                texto: comment[4],
+                id_identification: comment[6]
+
+            }));
+        });
+        // setReportes(prevReportes => {
+        //     return response.data.map((observation) => ({
+        //         id: observation[0],
+        //         id_user: observation[1],
+        //         id_taxon: observation[2],
+        //         id_image: observation[3],
+        //         Commentary: observation[4],
+        //         Period: observation[5],
+        //         Latitud: observation[6],
+        //         Longitud: observation[7]
         //     }));
         // });
+        console.log('arreglo comentarios ',comentarios);
     }
 
     useEffect(() => {
-        console.log('cargaComentarios');
-        cargarComentarios();
+        const cargarDatos = async () => {
+            console.log('cargaComentarios');
+            await cargarComentarios();
+        };
+
+        cargarDatos();
     }, []);
 
 
 
     const eliminarComentario = async (id_identification) => {
-        id_identification.preventDefault();
 
         const data = {
             id_identification: id_identification
@@ -92,15 +106,18 @@ function Comentarios({ usrID, observacionID }) {
             }
         });
         console.log(response);
+        const commentsActualizados = comentarios.filter(comentario => comentario.id_identification !== id_identification);
+        setComentarios(commentsActualizados);
+
     }
 
     return (
-        <form className='form-comentarios'>
+        <div className='form-comentarios'>
             <h1>Comentarios</h1>
             <div className='comentario-nuevo'>
                 <div className='texto-comentario'>
                     <TextSpace
-                        placeHold={'    Escribe aquí tu comentario'}
+                        placeHold={''}
                         tipo={'text'}
                         getInput={setNuevoComentario}
                     />
@@ -118,24 +135,21 @@ function Comentarios({ usrID, observacionID }) {
                     // Last_name: comment[1],
                     // id_user: comment[3],
                     // texto: comment[4],
-                    comentarios.map((comment) => {
-                        <div className='Comentario'>
-                            {usrID === comment.id_user ? //esUsuario
-                                <div className='comentario-contenedor-iconos'
-                                    onClick={() =>  eliminarComentario( comment.id_identification)}>
-                                    <AiOutlineCloseCircle className='comentario-icono' />
-                                </div>
-                                :
-                                ''
-                            }
+                    comentarios.map((comment) => 
+                        <div className='comentario'
+                            key={comment.id_identification}>
+                            <div className='comentario-contenedor-iconos'
+                                onClick={() => eliminarComentario(comment.id_identification)}>
+                                <AiOutlineCloseCircle className='comentario-icono' />
+                            </div>
                             <TextoPerso
                                 placeHold={comment.Name + ' ' + comment.Last_name}
                                 texto={comment.texto} />
                         </div>
-                    })
+                    )
                 }
             </div>
-        </form>
+        </div>
     );
 }
 

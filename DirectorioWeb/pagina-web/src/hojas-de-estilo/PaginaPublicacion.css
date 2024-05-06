@@ -1,6 +1,13 @@
+
 * {
     font-family: Roboto, sans-serif;
     font-style: normal;
+}
+.contenedor-comentarios-pub {
+    /* background-color: green; */
+    display: flex;
+
+
 }
 
 .form-publicacion {
@@ -8,7 +15,7 @@
     margin-bottom: 3%;
     width: 90%;
     height: 90%;
-    background: white;
+    background-color: white;
     border-radius: 15px;
     /* padding-bottom: 20px;
     padding-top: 20px; */
@@ -33,4 +40,12 @@
     padding-left: 20px;
     padding-right: 20px;
     justify-content: space-between;
+}
+
+.contenedor-datos-pub {
+    display: inline;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    min-height: 60%;
 }

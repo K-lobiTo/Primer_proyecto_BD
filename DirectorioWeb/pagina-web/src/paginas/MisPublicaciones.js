@@ -9,7 +9,7 @@ import TextoPerso from '../componentes/TextoPerso';
 function MisPublicaciones() {
     const navigate = useNavigate();
     const location = useLocation();
-    const usrMail = location.state?.mail;
+    const usrMail = location.state?.usrMail;
     const usrID = location.state?.usrID;
 
 

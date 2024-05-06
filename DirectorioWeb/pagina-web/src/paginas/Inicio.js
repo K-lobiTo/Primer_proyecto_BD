@@ -14,14 +14,14 @@ function Inicio() {  // usuarioID
 
     const abrirMisPublicaciones = () => {
         console.log(usrMail);
-        navigate('/mispublicaciones', { state: { usrID: usrID, mail: usrMail } })
+        navigate('/mispublicaciones', { state: { usrID: usrID, usrMail: usrMail } })
 
         //          Abrir mis publicaciones, con la informacion de usuario
     }
 
-    const volverAqui = () => {
-        navigate('/inicio', { state: { usrMail: usrMail, usrID: usrID } })
-    }
+    // const volverAqui = () => {
+    //     navigate('/inicio', { state: { usrMail: usrMail, usrID: usrID } })
+    // }
 
     return (
         <div className='form-inicio'>
@@ -38,10 +38,10 @@ function Inicio() {  // usuarioID
                         placeHold={'Correo de Usuario: '}
                         texto={usrMail}
                     />
-                    <BotonM
+                    {/* <BotonM
                         texto={' Probando '}
                         handleClick={console.log(usrMail)}
-                    />
+                    /> */}
                 </div>
             </div>
             <div className='contenedor-buscar-reportes'>

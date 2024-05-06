@@ -1,12 +1,17 @@
 .form-comentarios {
+    /* background-color: red; */
 
-    display: inline;
+    /* display: inline; */
+    display: flex;
+    display: inline-block;
     align-items: center;
     justify-content: center;
     position: relative;
+    padding: 7%;
 
-    width: 100%;
-    min-height: 100px;
+    width: 90%;
+    height: 90%;
+
     text-align: center;
 }
 
@@ -17,9 +22,13 @@
 } */
 
 .comentario-nuevo {
+    text-align: center;
     display: flex;
     justify-content: space-between;
-    /* background-color: red; */
+    height: 100%;
+    border-width: 20px;
+    border-color: blueviolet;
+    border-radius: 10px;
 }
 
 .boton-comentario {
@@ -29,8 +38,12 @@
 }
 
 .texto-comentario {
+    /* background-color: red; */
+    border: 2px solid purple;
+    border-radius: 10px;
     padding: 8px;
     width: 90%;
+    height: 100%;
 }
 
 .comentarios {
@@ -40,11 +53,21 @@
 
     width: 100%;
     min-height: 100px;
-    background-color: aquamarine;
+    border-radius: 20px;
+    background-color: purple;
+}
+
+.comentario {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-color: whitesmoke;
+    border-radius: 10px;
+    background-color: whitesmoke
 }
 
 .comentario-contenedor-iconos {
-    background-color: blue;
+    /* background-color: blue; */
     margin-bottom: 35px;
 }
 

@@ -98,6 +98,7 @@ app.post('/delete/identification', async (req, res) => {
         await connection.commit();
         await connection.close();
         console.log('GG');
+        res.send('ok!');
     } catch {
         res.send('Error');
     }
@@ -113,7 +114,7 @@ app.post('/get/identifications', async (req, res) => {
         //aqui se puede verificar si la consulta no obtuvo nada
         res.json(consult.rows);
         await connection.close();
-        console.log('ok! get identification');
+        console.log('ok!');
     } catch (err) {
         res.send('Error');
         console.log(err);
